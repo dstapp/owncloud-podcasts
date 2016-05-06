@@ -1,0 +1,85 @@
+.podcasts--list {
+    padding: 20px;
+}
+
+.list--item {
+    width: 250px;
+    height: 250px;
+    text-align: center;
+    float: left;
+}
+
+.item--cover-container {
+    height: 150px;
+    width: 150px;
+    background-color: #ccc;
+    -webkit-box-shadow: 0px 0px 20px -8px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 0px 0px 20px -8px rgba(0, 0, 0, 1);
+    box-shadow: 0px 0px 20px -8px rgba(0, 0, 0, 1);
+    position: relative;
+    margin: 0 auto 16px auto;
+}
+
+.cover-container--icon {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    border-radius: 50%;
+    padding: 4px;
+    z-index: 5000;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.feed--item-active {
+    font-weight: bold;
+}
+
+.cover-container--icon-playing {
+    background-color: #fff;
+}
+
+.cover-container--icon-new {
+    background-color: #ff6666;
+}
+
+.cover-container--cover {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.item--description {
+    height: 60px;
+}
+
+.is--active {
+    border: 5px solid #3a7ead;
+    height: 140px;
+    width: auto;
+}
+
+.list--loading-indicator {
+    display: none;
+}
+
+.add-feed--input {
+    width: 100%;
+}
+
+.add-new--container {
+    padding: 12px;
+}
+
+#app-navigation .feed-container--item a {
+    padding-left: 12px;
+}
+
+#app-navigation .app-navigation-entry-utils {
+    padding-right: 12px;
+}
+

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<info>
+    <id>podcasts</id>
+    <name>Podcasts</name>
+    <description>Podcasts let's you stream your favorite podcasts, saves current playback position and gives you a simple user interface.</description>
+    <licence>AGPL</licence>
+    <author>David Prandzioch</author>
+    <version>0.8.0</version>
+    <namespace>Podcasts</namespace>
+    <category>multimedia</category>
+    <dependencies>
+        <owncloud min-version="9.0" />
+        <owncloud max-version="10.0" />
+    </dependencies>
+</info>
