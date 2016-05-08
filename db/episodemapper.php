@@ -135,7 +135,7 @@ class EpisodeMapper extends Mapper
     /**
      * Deletes all episodes that belong to a feed by it's ID
      *
-     * @param int $feedId
+     * @param int    $feedId
      * @param string $uid
      *
      * @return \PDOStatement
@@ -153,7 +153,7 @@ class EpisodeMapper extends Mapper
     /**
      * Loads an episode by it's ID
      *
-     * @param int $id
+     * @param int    $id
      * @param string $uid
      *
      * @return \OCP\AppFramework\Db\Entity

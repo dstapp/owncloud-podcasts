@@ -1,7 +1,30 @@
-<phpunit bootstrap="../../lib/base.php">
-    <testsuites>
-        <testsuite name="unit">
-            <directory>./tests/unit</directory>
-        </testsuite>
-    </testsuites>
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit bootstrap="tests/bootstrap.php"
+         colors="true"
+         stopOnFailure="true"
+         syntaxCheck="true"
+         backupGlobals="false"
+>
+    <testsuite name="ownCloud - Podcasts App Tests">
+        <directory suffix="test.php">./tests/unit</directory>
+    </testsuite>
+    <logging>
+        <log type="coverage-html"
+             target="build/coverage"
+             charset="UTF-8"
+             yui="true"
+             highlight="true"
+             lowUpperBound="35"
+             highLowerBound="70"/>
+    </logging>
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">.</directory>
+            <exclude>
+                <directory suffix=".php">./tests</directory>
+                <directory suffix=".php">./vendor</directory>
+                <directory suffix=".php">./templates</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

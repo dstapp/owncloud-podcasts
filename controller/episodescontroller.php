@@ -86,7 +86,7 @@ class EpisodesController extends ApiController
 
         return new JSONResponse([
             "data"   => $this->episodeMapper->getEpisodes($this->userId, $feedId, 1000),
-            "status" => "success",
+            "success" => true,
         ]);
     }
 
@@ -107,7 +107,7 @@ class EpisodesController extends ApiController
         $second = (int)$this->request->getParam("second");
         $duration = (int)$this->request->getParam("duration");
 
-        $result = $this->episodeMapper->updatePosition($this->userId, $id, $second, $duration);
+        $result = (bool) $this->episodeMapper->updatePosition($this->userId, $id, $second, $duration);
 
         return new JSONResponse([
             "success" => (true === $result),
@@ -124,7 +124,7 @@ class EpisodesController extends ApiController
      */
     public function markPlayed()
     {
-        $result = $this->episodeMapper->markAllAsPlayed($this->userId);
+        $result = (bool) $this->episodeMapper->markAllAsPlayed($this->userId);
 
         return new JSONResponse([
             "success" => (true === $result),

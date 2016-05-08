@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace OCA\Podcasts;
+namespace OCA\Podcasts\Feed;
 
 use OCA\Podcasts\Db\Episode;
 use OCA\Podcasts\Db\EpisodeMapper;
@@ -28,12 +28,10 @@ use OCA\Podcasts\Db\Feed;
 use OCA\Podcasts\Db\FeedMapper;
 use PicoFeed\Reader\Reader;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 /**
  * Class FeedUpdater
  *
- * @package OCA\Podcasts
+ * @package OCA\Podcasts\Feed
  */
 class FeedUpdater
 {
@@ -74,7 +72,11 @@ class FeedUpdater
         $feeds = $this->feedMapper->getAllFeeds();
 
         foreach ($feeds as $feed) {
-            $this->processFeed($feed);
+            try {
+                $this->processFeed($feed);
+            } catch (\Exception $e) {
+                // @todo warn
+            }
         }
     }
 
@@ -87,6 +89,8 @@ class FeedUpdater
      */
     public function checkFeed(Feed $feed)
     {
+        $success = false;
+
         try {
             $reader = new Reader();
             $resource = $reader->download($feed->getUrl());
@@ -99,10 +103,12 @@ class FeedUpdater
 
             $parser->execute();
 
-            return true;
+            $success = true;
         } catch (\Exception $e) {
-            return false;
+            // $success = false set on initialization
         }
+
+        return $success;
     }
 
     /**
@@ -115,25 +121,25 @@ class FeedUpdater
      */
     public function processFeed(Feed $feed)
     {
-        try {
-            $reader = new Reader();
-            $resource = $reader->download($feed->getUrl());
+        $reader = new Reader();
+        $resource = $reader->download($feed->getUrl());
 
-            $parser = $reader->getParser(
-                $resource->getUrl(),
-                $resource->getContent(),
-                $resource->getEncoding()
-            );
+        $parser = $reader->getParser(
+            $resource->getUrl(),
+            $resource->getContent(),
+            $resource->getEncoding()
+        );
 
-            $rss = $parser->execute();
+        $rss = $parser->execute();
 
-            $feed->setName($rss->getTitle());
-            $feed->setCover($rss->getLogo());
-            $this->feedMapper->update($feed);
+        $feed->setName($rss->getTitle());
+        $feed->setCover($rss->getLogo());
+        $this->feedMapper->update($feed);
 
-            foreach ($rss->getItems() as $item) {
-                /** @var \PicoFeed\Parser\Item $item */
 
+        /** @var \PicoFeed\Parser\Item $item */
+        foreach ($rss->getItems() as $item) {
+            try {
                 $exists = $this->episodeMapper->episodeExists($feed->getUid(), $item->getEnclosureUrl());
 
                 if (false === $exists) {
@@ -147,9 +153,9 @@ class FeedUpdater
 
                     $this->episodeMapper->insert($episode);
                 }
+            } catch (\Exception $e) {
+                // @todo warn
             }
-        } catch (Exception $e) {
-            // @todo warn
         }
     }
 }

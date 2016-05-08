@@ -27,7 +27,7 @@ use OCA\Podcasts\Controller\PodcastController;
 use OCA\Podcasts\Controller\WebViewController;
 use OCA\Podcasts\Db\EpisodeMapper;
 use OCA\Podcasts\Db\FeedMapper;
-use OCA\Podcasts\FeedUpdater;
+use OCA\Podcasts\Feed\FeedUpdater;
 use OCP\AppFramework\App;
 
 /**

@@ -39,7 +39,7 @@ class Feed extends Entity
     /**
      * @var string
      */
-    public $name;
+    public $name = "";
 
     /**
      * @var string
@@ -49,5 +49,5 @@ class Feed extends Entity
     /**
      * @var string
      */
-    public $cover;
+    public $cover = "";
 }

@@ -24,12 +24,11 @@ namespace OCA\Podcasts\Controller;
 
 use OCA\Podcasts\Db\Feed;
 use OCA\Podcasts\Db\FeedMapper;
-use OCA\Podcasts\FeedUpdater;
+use OCA\Podcasts\Feed\FeedUpdater;
 use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
-use \OCP\IDb;
 use \OCA\Podcasts\Db\EpisodeMapper;
 
 /**
@@ -103,8 +102,8 @@ class FeedsController extends ApiController
     public function getFeeds()
     {
         return new JSONResponse([
-            "data"   => $this->feedMapper->getFeeds($this->userId),
-            "status" => "success",
+            "data"    => $this->feedMapper->getFeeds($this->userId),
+            "success" => true,
         ]);
     }
 
@@ -123,11 +122,11 @@ class FeedsController extends ApiController
         $feed = new Feed();
         $feed->setId($id);
 
-        $feedResult = $this->feedMapper->delete($feed);
-        $episodeResult = $this->episodeMapper->deleteByFeedId($id, $this->userId);
+        $this->feedMapper->delete($feed);
+        $this->episodeMapper->deleteByFeedId($id, $this->userId);
 
         return new JSONResponse([
-            "success" => (true === $feedResult && true === $episodeResult),
+            "success" => true,
         ]);
     }
 
@@ -141,6 +140,9 @@ class FeedsController extends ApiController
      */
     public function addFeed()
     {
+        $success = false;
+        $message = "";
+
         try {
             $url = $this->request->getParam("url");
 
@@ -153,7 +155,7 @@ class FeedsController extends ApiController
             }
 
             if (true === $this->feedMapper->feedExists($this->userId, $url)) {
-                throw new \Exception("Feed does already exist");
+                throw new \Exception("Feed already exists");
             }
 
             $feed = new Feed();
@@ -171,11 +173,12 @@ class FeedsController extends ApiController
 
             $success = true;
         } catch (\Exception $e) {
-            $success = false;
+            $message = $e->getMessage();
         }
 
         return new JSONResponse([
             "success" => $success,
+            "message" => $message,
         ]);
     }
 }
