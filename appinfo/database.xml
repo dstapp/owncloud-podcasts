@@ -88,7 +88,7 @@
             <field>
                 <name>name</name>
                 <type>text</type>
-                <notnull>true</notnull>
+                <notnull>false</notnull>
             </field>
             <field>
                 <name>url</name>
@@ -98,7 +98,7 @@
             <field>
                 <name>cover</name>
                 <type>text</type>
-                <notnull>true</notnull>
+                <notnull>false</notnull>
             </field>
         </declaration>
     </table>
