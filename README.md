@@ -1,6 +1,7 @@
 # ownCloud Podcasts app
 
 Build status: ![Travis CI build status](https://travis-ci.org/dprandzioch/owncloud-podcasts.svg?branch=master)
+Travis build URL: https://travis-ci.org/dprandzioch/owncloud-podcasts
 
 The ownCloud Podcasts app consolidates podcast episodes of all your feeds and shows them within the ownCloud web
 interface. Double-clicking a cover starts playback in a separate window so you can continue working in ownCloud while
@@ -14,7 +15,6 @@ Place this app in **owncloud/apps/** and run `composer install`
 * Volume control
 * Full translation
 * Beautify UI
-* Unit tests
 * Fix CLRF
 
 ## License
