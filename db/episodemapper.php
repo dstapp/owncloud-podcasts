@@ -71,7 +71,7 @@ class EpisodeMapper extends Mapper
         $sql = "SELECT * FROM *PREFIX*podcasts_episodes WHERE uid = ? AND url = ? LIMIT 1";
 
         $stmt = $this->execute($sql, [$uid, $url]);
-        $exists = $stmt->rowCount() > 0;
+        $exists = count($stmt->fetchAll()) > 0;
         $stmt->closeCursor();
 
         return $exists;
