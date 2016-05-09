@@ -43,6 +43,7 @@ install:
 
 before_script:
   - cd apps/podcasts
+  - composer install
 
 script:
   - phpunit -c phpunit.xml
