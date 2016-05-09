@@ -53,8 +53,8 @@ class EpisodeMapper extends Mapper
     public function markAllAsPlayed($uid)
     {
         return $this->execute(
-            "UPDATE *PREFIX*podcasts_episodes SET played = 1 WHERE uid = ?",
-            [$uid]
+            "UPDATE *PREFIX*podcasts_episodes SET played = ? WHERE uid = ?",
+            [true, $uid]
         );
     }
 
