@@ -1,4 +1,4 @@
-0.8.1 (unreleased)
+0.8.1
 * PHPUnit coverage
 * SQLite compatibility
 * pgsql compatibility
