@@ -25,16 +25,18 @@ script("podcasts", "jquery.podcast-sidebar");
 script("podcasts", "jquery.episode-list");
 script("podcasts", "episodelist");
 
-style("podcasts", "episodelist");
+style("podcasts", "default");
 ?>
-<div id="app-navigation">
+<div id="app-navigation" class="app--navigation">
     <ul id="navigation-list" class="with-icon">
         <li class="navigation--add-new">
             <div class="add-new--container">
                 <form class="add-feed" data-url="<?php echo $_["add_url"] ?>">
-                    <input type="text" class="add-feed--input" value="" placeholder="<?php p($l->t("Enter Feed URL")); ?>"/>
-                    <button class="add-feed--button" title="<?php p($l->t('Add Feed')); ?>"><?php p($l->t("Add Feed")); ?></button>
-                    <img class="list--loading-indicator"
+                    <input type="text" class="add-feed--input" value=""
+                           placeholder="<?php p($l->t("Enter Feed URL")); ?>"/>
+                    <button class="add-feed--button"
+                            title="<?php p($l->t('Add Feed')); ?>"><?php p($l->t("Add Feed")); ?></button>
+                    <img class="navigation--loading-indicator"
                          src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
                 </form>
             </div>
@@ -71,11 +73,11 @@ style("podcasts", "episodelist");
         <div class="item--cover-container">
             <img src="<&= val.cover &>" class="cover-container--cover"/>
             <& if (val.duration == 0 && val.played == 0) { &>
-                <i class="cover-container--icon cover-container--icon-new icon-info-white"></i>
+            <i class="cover-container--icon cover-container--icon-new icon-info-white"></i>
             <& } &>
 
             <& if (val.duration > 0 && val.played == 0) { &>
-                <i class="cover-container--icon cover-container--icon-playing icon-play"></i>
+            <i class="cover-container--icon cover-container--icon-playing icon-play"></i>
             <& } &>
         </div>
         <div class="item--description">
@@ -88,7 +90,8 @@ style("podcasts", "episodelist");
     <li class="feed-container--item">
         <a href="#" class="feed--item" data-id="<&= val.id &>"><&= val.name &></a>
         <div class="app-navigation-entry-utils">
-            <button class="feed--delete-button icon-delete" title="<?php p($l->t("Delete")); ?>" data-id="<&= val.id &>"></button>
+            <button class="feed--delete-button icon-delete" title="<?php p($l->t("Delete")); ?>"
+                    data-id="<&= val.id &>"></button>
         </div>
     </li>
 </script>

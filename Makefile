@@ -24,7 +24,13 @@ update-composer: install-composer
 	rm -f composer.lock
 	php composer.phar install --prefer-dist
 
-appstore: clean install-deps
+watch-scss:
+	sass --watch scss/:css/
+
+compile-scss:
+    sass --no-cache --update --style compressed --sourcemap=none --scss scss/:css/
+
+appstore: clean install-deps compile-scss
 	mkdir -p $(appstore_dir)
 	tar cvzf $(appstore_dir)/$(package_name).tar.gz $(project_dir) \
 	--exclude=$(project_dir)/.git \
@@ -38,6 +44,7 @@ appstore: clean install-deps
 	--exclude=$(project_dir)/phpunit*xml \
 	--exclude=$(project_dir)/Makefile \
 	--exclude=$(project_dir)/tests \
+	--exclude=$(project_dir)/scss \
 	--exclude=.keep \
 	--exclude=.gitkeep \
 	--exclude=.gitignore \

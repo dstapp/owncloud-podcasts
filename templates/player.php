@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-style("podcasts", "player");
+style("podcasts", "default");
 
 script("podcasts", "jquery.podcast-player");
 script("podcasts", "player");

@@ -1,3 +1,7 @@
 vendor/
 .DS_Store
 composer.phar
+.sass-cache/
+build/
+css/*.css
+css/*.css.map
