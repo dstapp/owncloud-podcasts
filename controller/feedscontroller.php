@@ -176,9 +176,12 @@ class FeedsController extends ApiController
             $message = $e->getMessage();
         }
 
-        return new JSONResponse([
-            "success" => $success,
-            "message" => $message,
-        ]);
+        return new JSONResponse(
+            [
+                "success" => $success,
+                "message" => $message,
+            ],
+            (false === empty($message)) ? Http::STATUS_BAD_REQUEST : Http::STATUS_OK
+        );
     }
 }

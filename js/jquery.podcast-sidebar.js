@@ -35,7 +35,7 @@
             var endpoint = sidebar.find(".add-feed").data("url");
 
             sidebar.find(".add-feed--button").hide();
-            sidebar.find(".list--loading-indicator").show();
+            sidebar.find(".navigation--loading-indicator").show();
 
             $.ajax({
                 type: "PUT",
@@ -51,11 +51,11 @@
                 },
                 error: function (request, status, error) {
                     alert("Feed could not be added");
-                    sidebar.find(".list--loading-indicator").hide();
+                    sidebar.find(".navigation--loading-indicator").hide();
                     sidebar.find(".add-feed--button").show();
                 }
             }).done(function () {
-                sidebar.find(".list--loading-indicator").hide();
+                sidebar.find(".navigation--loading-indicator").hide();
                 sidebar.find(".add-feed--button").show();
             });
 
@@ -81,7 +81,7 @@
                 var deleteEndpoint = sidebar.find(".list--feed-container").data("delete-endpoint");
 
                 sidebar.find(".add-feed--button").hide();
-                sidebar.find(".list--loading-indicator").show();
+                sidebar.find(".navigation--loading-indicator").show();
 
                 $.ajax({
                     type: "DELETE",
@@ -92,11 +92,11 @@
                     },
                     error: function (data) {
                         alert("Could not delete Feed");
-                        sidebar.find(".list--loading-indicator").hide();
+                        sidebar.find(".navigation--loading-indicator").hide();
                         sidebar.find(".add-feed--button").show();
                     }
                 }).done(function () {
-                    sidebar.find(".list--loading-indicator").hide();
+                    sidebar.find(".navigation--loading-indicator").hide();
                     sidebar.find(".add-feed--button").show();
                 });
             }
@@ -107,7 +107,7 @@
                 var endpoint = $(this).data("endpoint");
 
                 sidebar.find(".add-feed--button").hide();
-                sidebar.find(".list--loading-indicator").show();
+                sidebar.find(".navigation--loading-indicator").show();
 
                 $.ajax({
                     type: "POST",
@@ -117,11 +117,11 @@
                     },
                     error: function (data) {
                         alert("Could not mark Episodes as played");
-                        sidebar.find(".list--loading-indicator").hide();
+                        sidebar.find(".navigation--loading-indicator").hide();
                         sidebar.find(".add-feed--button").show();
                     }
                 }).done(function () {
-                    sidebar.find(".list--loading-indicator").hide();
+                    sidebar.find(".navigation--loading-indicator").hide();
                     sidebar.find(".add-feed--button").show();
                 });
             }

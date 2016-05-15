@@ -85,7 +85,7 @@ class EpisodesController extends ApiController
         $feedId = $this->request->getParam("feedId", null);
 
         return new JSONResponse([
-            "data"   => $this->episodeMapper->getEpisodes($this->userId, $feedId, 1000),
+            "data"    => $this->episodeMapper->getEpisodes($this->userId, $feedId, 1000),
             "success" => true,
         ]);
     }
@@ -107,11 +107,14 @@ class EpisodesController extends ApiController
         $second = (int)$this->request->getParam("second");
         $duration = (int)$this->request->getParam("duration");
 
-        $result = (bool) $this->episodeMapper->updatePosition($this->userId, $id, $second, $duration);
+        $result = (bool)$this->episodeMapper->updatePosition($this->userId, $id, $second, $duration);
 
-        return new JSONResponse([
-            "success" => (true === $result),
-        ]);
+        return new JSONResponse(
+            [
+                "success" => (true === $result),
+            ],
+            (true === $result) ? Http::STATUS_OK : Http::STATUS_BAD_REQUEST
+        );
     }
 
     /**
@@ -124,10 +127,13 @@ class EpisodesController extends ApiController
      */
     public function markPlayed()
     {
-        $result = (bool) $this->episodeMapper->markAllAsPlayed($this->userId);
+        $result = (bool)$this->episodeMapper->markAllAsPlayed($this->userId);
 
-        return new JSONResponse([
-            "success" => (true === $result),
-        ]);
+        return new JSONResponse(
+            [
+                "success" => (true === $result),
+            ],
+            (true === $result) ? Http::STATUS_OK : Http::STATUS_BAD_REQUEST
+        );
     }
 }
