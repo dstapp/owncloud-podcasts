@@ -22,7 +22,9 @@
 
 style("podcasts", "default");
 
-script("podcasts", "jquery.podcast-player");
+script("podcasts", "app");
+script("podcasts", "controller/player");
+
 script("podcasts", "player");
 ?>
 <div id="player" class="player" data-url="<?php echo $_["episode"]->getUrl() ?>"

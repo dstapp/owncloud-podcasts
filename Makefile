@@ -25,12 +25,19 @@ update-composer: install-composer
 	php composer.phar install --prefer-dist
 
 watch-scss:
-	sass --watch scss/:css/
+	sass --watch src/scss/:css/
 
 compile-scss:
-    sass --no-cache --update --style compressed --sourcemap=none --scss scss/:css/
+	sass --no-cache --update --style compressed --sourcemap=none --scss src/scss/:css/
 
-appstore: clean install-deps compile-scss
+watch-coffeescript: compile-coffeescript
+	#coffee --watch -o js/ --compile src/coffeescript/*.coffee
+	coffee -cwo js/ src/coffeescript
+
+compile-coffeescript:
+	coffee -co js/ src/coffeescript
+
+appstore: clean install-deps compile-scss compile-coffeescript
 	mkdir -p $(appstore_dir)
 	tar cvzf $(appstore_dir)/$(package_name).tar.gz $(project_dir) \
 	--exclude=$(project_dir)/.git \
