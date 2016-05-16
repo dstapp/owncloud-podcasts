@@ -21,11 +21,6 @@
  */
 
 script("podcasts", "vendor/angular.min");
-script("podcasts", "vendor/js_tpl");
-
-//script("podcasts", "jquery.podcast-sidebar");
-//script("podcasts", "jquery.episode-list");
-//script("podcasts", "episodelist");
 
 script("podcasts", "app");
 script("podcasts", "service/feed");
@@ -50,12 +45,8 @@ style("podcasts", "default");
                 </div>
             </li>
 
-            <li class="list--feed-container" data-endpoint="<?php echo $_["feed_endpoint"]; ?>"
-                data-delete-endpoint="<?php echo $_["feed_delete_endpoint"]; ?>">
-            </li>
-
-            <li class="feed-container--item" ng-repeat="feed in feeds">
-                <a href="#" class="feed--item" data-id="{{feed.id}}">{{feed.name}}</a>
+            <li class="navigation--feed" ng-repeat="feed in feeds">
+                <a href="#" class="feed--item" ng-click="sidebar.filter(feed)" ng-class="{'is--active' : sidebar.isSelected(feed)}">{{feed.name}}</a>
                 <div class="app-navigation-entry-utils">
                     <button class="feed--delete-button icon-delete" title="<?php p($l->t("Delete")); ?>"
                             data-id="{{feed.id}}"></button>

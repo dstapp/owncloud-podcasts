@@ -95,7 +95,6 @@ class FeedsController extends ApiController
      * Returns all feeds for the current user
      *
      * @NoAdminRequired
-     * @NoCSRFRequired
      *
      * @return JSONResponse
      */
@@ -111,7 +110,6 @@ class FeedsController extends ApiController
      * Deletes a feed
      *
      * @NoAdminRequired
-     * @NoCSRFRequired
      *
      * @param int $id
      *
@@ -134,7 +132,6 @@ class FeedsController extends ApiController
      * Adds a feed
      *
      * @NoAdminRequired
-     * @NoCSRFRequired
      *
      * @return JSONResponse
      */

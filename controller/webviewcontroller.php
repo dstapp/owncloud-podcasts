@@ -84,14 +84,7 @@ class WebViewController extends Controller
      */
     public function index()
     {
-        $response = new TemplateResponse("podcasts", "main", [
-            "episode_endpoint"            => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/episodes"),
-            "feed_endpoint"               => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/feeds"),
-            "player_url"                  => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/player/"),
-            "add_url"                     => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/feeds"),
-            "feed_delete_endpoint"        => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/feeds/"),
-            "mark_all_as_played_endpoint" => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/episodes/markplayed"),
-        ]);
+        $response = new TemplateResponse("podcasts", "main", []);
 
         $policy = new ContentSecurityPolicy();
         $policy->addAllowedFrameDomain("'self'");
@@ -120,9 +113,8 @@ class WebViewController extends Controller
         $feed = $this->feedMapper->getFeed($episode->getFeedId(), $this->userId);
 
         $params = [
-            "episode"         => $episode,
-            "feed"            => $feed,
-            "update_endpoint" => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/episodes/" . $id . "/position"),
+            "episode" => $episode,
+            "feed"    => $feed,
         ];
 
         $response = new TemplateResponse("podcasts", "player", $params);

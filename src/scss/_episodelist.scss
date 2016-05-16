@@ -84,19 +84,17 @@
 }
 
 .app--navigation {
-    .navigation--loading-indicator {
-        display: none;
+    .navigation--add-new {
+        .add-new--container {
+            padding: 12px;
+        }
     }
 
-    .add-new--container {
-        padding: 12px;
-    }
-
-    .feed-container--item {
+    .navigation--feed {
         .feed--item {
             padding-left: 12px !important;
 
-            &.feed--item-active {
+            &.is--active {
                 font-weight: bold;
             }
         }

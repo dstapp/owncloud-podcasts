@@ -51,7 +51,7 @@ appstore: clean install-deps compile-scss compile-coffeescript
 	--exclude=$(project_dir)/phpunit*xml \
 	--exclude=$(project_dir)/Makefile \
 	--exclude=$(project_dir)/tests \
-	--exclude=$(project_dir)/scss \
+	--exclude=$(project_dir)/src \
 	--exclude=.keep \
 	--exclude=.gitkeep \
 	--exclude=.gitignore \
