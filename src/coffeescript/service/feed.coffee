@@ -21,6 +21,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 angular.module("Podcasts").factory "FeedService", ["$http", ($http) ->
   new class FeedService
     all: ->
-      url = OC.generateUrl("/apps/podcasts/feeds")
-      $http.get(url)
+      apiUrl = OC.generateUrl("/apps/podcasts/feeds")
+      $http.get apiUrl
+    subscribe: (feedUrl) ->
+      apiUrl = OC.generateUrl("/apps/podcasts/feeds")
+      $http.put apiUrl, url: feedUrl
+    unsubscribe: (feedId) ->
+      apiUrl = OC.generateUrl("/apps/podcasts/feeds/" + feedId)
+      $http.delete apiUrl
 ]

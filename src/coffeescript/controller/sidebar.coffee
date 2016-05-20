@@ -18,20 +18,51 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
-angular.module("Podcasts").controller "SidebarController", ["$scope", "FeedService", ($scope, FeedService) ->
-  $scope.filteredFeed = null
+class SidebarController
 
-  FeedService.all().then (response) ->
-    $scope.feeds = response.data.data
-  , (error) ->
-    alert "Could not load the feeds"
+  @$inject: ['$scope', 'FeedService']
+  constructor: ($scope, FeedService) ->
+    @scope = $scope
+    @feedService = FeedService
+
+    @scope.filteredFeed = null
+    @scope.feedUrl = "Feed URL"
+    @scope.loading = false
+
+    @loadFeeds()
 
   filter: (feed) ->
     if @isSelected(feed)
-      $scope.filteredFeed = null
+      @scope.filteredFeed = null
     else
-      $scope.filteredFeed = feed
+      @scope.filteredFeed = feed
 
   isSelected: (selection) ->
-    $scope.filteredFeed == selection
-]
+    @scope.filteredFeed == selection
+
+  subscribeFeed: ->
+    @loading = yes
+    @feedService.subscribe(@scope.feedUrl).then (response) =>
+      @loading = no
+      @loadFeeds()
+    , (error) ->
+      alert "Could not subcribe to the feed"
+
+  unsubscribeFeed: (id) ->
+    if confirm "Do you really want to unsubscribe the selected feed?"
+      @loading = yes
+      @feedService.unsubscribe(id).then (response) =>
+        @loading = no
+        @loadFeeds()
+      , (error) ->
+        alert "Could not unsubcribe the feed"
+
+  loadFeeds: () ->
+    @loading = yes
+    @feedService.all().then (response) =>
+      @scope.feeds = response.data.data
+      @loading = no
+    , (error) ->
+      alert "Could not load the feeds"
+
+angular.module("Podcasts").controller "SidebarController", SidebarController

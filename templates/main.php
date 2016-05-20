@@ -35,11 +35,11 @@ style("podcasts", "default");
             <li class="navigation--add-new">
                 <div class="add-new--container">
                     <form class="add-feed" data-url="<?php echo $_["add_url"] ?>">
-                        <input type="text" class="add-feed--input" value=""
+                        <input type="text" class="add-feed--input" ng-model="feedUrl"
                                placeholder="<?php p($l->t("Enter Feed URL")); ?>"/>
-                        <button class="add-feed--button" ng-click="sidebar.testFoo()"
-                                title="<?php p($l->t('Add Feed')); ?>"><?php p($l->t("Add Feed")); ?></button>
-                        <img class="navigation--loading-indicator"
+                        <button class="add-feed--button" ng-click="sidebar.subscribeFeed()"
+                                title="<?php p($l->t('Add Feed')); ?>"><?php p($l->t("Subscribe")); ?></button>
+                        <img class="navigation--loading-indicator" ng-show="loading"
                              src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
                     </form>
                 </div>
@@ -49,7 +49,7 @@ style("podcasts", "default");
                 <a href="#" class="feed--item" ng-click="sidebar.filter(feed)" ng-class="{'is--active' : sidebar.isSelected(feed)}">{{feed.name}}</a>
                 <div class="app-navigation-entry-utils">
                     <button class="feed--delete-button icon-delete" title="<?php p($l->t("Delete")); ?>"
-                            data-id="{{feed.id}}"></button>
+                            ng-click="sidebar.unsubscribeFeed(feed.id)"></button>
                 </div>
             </li>
         </ul>
