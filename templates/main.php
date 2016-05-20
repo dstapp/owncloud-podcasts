@@ -21,12 +21,7 @@
  */
 
 script("podcasts", "vendor/angular.min");
-
-script("podcasts", "app");
-script("podcasts", "service/feed");
-script("podcasts", "controller/sidebar");
-script("podcasts", "controller/episode-list");
-
+script("podcasts", "podcasts");
 style("podcasts", "default");
 ?>
 <div ng-app="Podcasts">
@@ -60,7 +55,7 @@ style("podcasts", "default");
                         tabindex="0"></button>
             </div>
             <div id="app-settings-content">
-                <button class="settings--mark-played" data-endpoint="<?php echo $_["mark_all_as_played_endpoint"]; ?>">
+                <button class="settings--mark-played" ng-click="sidebar.markAllPlayed()">
                     <?php p($l->t("Mark all as played")); ?>
                 </button>
             </div>

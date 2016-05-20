@@ -29,4 +29,7 @@ angular.module("Podcasts").factory "FeedService", ["$http", ($http) ->
     unsubscribe: (feedId) ->
       apiUrl = OC.generateUrl("/apps/podcasts/feeds/" + feedId)
       $http.delete apiUrl
+    markAllPlayed: () ->
+      apiUrl = OC.generateUrl("/episodes/markplayed")
+      $http.post apiUrl
 ]

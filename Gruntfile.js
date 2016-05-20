@@ -5,7 +5,8 @@ module.exports = function(grunt) {
         watch: {
             coffee: {
                 files: [
-                    'src/coffeescript/*.coffee'
+                    'src/coffeescript/*.coffee',
+                    'src/coffeescript/**/*.coffee'
                 ],
                 tasks: [ 'coffee:compile' ]
             },
@@ -29,7 +30,7 @@ module.exports = function(grunt) {
         coffee: {
             compile: {
                 files: {
-                   'js/*.js' : 'src/coffeescript/*.coffee'
+                   'js/podcasts.js': [ 'src/coffeescript/*.coffee', 'src/coffeescript/**/*.coffee' ]
                 }
             }
         }

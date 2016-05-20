@@ -26,7 +26,7 @@ class SidebarController
     @feedService = FeedService
 
     @scope.filteredFeed = null
-    @scope.feedUrl = "Feed URL"
+    @scope.feedUrl = ""
     @scope.loading = false
 
     @loadFeeds()
@@ -41,28 +41,36 @@ class SidebarController
     @scope.filteredFeed == selection
 
   subscribeFeed: ->
-    @loading = yes
+    @scope.loading = yes
     @feedService.subscribe(@scope.feedUrl).then (response) =>
-      @loading = no
+      @scope.loading = no
+      @scope.feedUrl = ""
       @loadFeeds()
     , (error) ->
       alert "Could not subcribe to the feed"
 
   unsubscribeFeed: (id) ->
     if confirm "Do you really want to unsubscribe the selected feed?"
-      @loading = yes
+      @scope.loading = yes
       @feedService.unsubscribe(id).then (response) =>
-        @loading = no
+        @scope.loading = no
         @loadFeeds()
       , (error) ->
         alert "Could not unsubcribe the feed"
 
   loadFeeds: () ->
-    @loading = yes
+    @scope.loading = yes
     @feedService.all().then (response) =>
       @scope.feeds = response.data.data
-      @loading = no
+      @scope.loading = no
     , (error) ->
       alert "Could not load the feeds"
+
+  markAllPlayed: () ->
+    @scope.loading = yes
+    @feedService.markAllPlayed().then (response) =>
+      @scope.loading = no
+    , (error) ->
+      alert "Could not mark all episodes as played"
 
 angular.module("Podcasts").controller "SidebarController", SidebarController

@@ -20,12 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+script("podcasts", "vendor/angular.min");
 style("podcasts", "default");
-
-script("podcasts", "app");
-script("podcasts", "controller/player");
-
-script("podcasts", "player");
+script("podcasts", "podcasts");
 ?>
 <div id="player" class="player" data-url="<?php echo $_["episode"]->getUrl() ?>"
      data-name="<?php echo $_["episode"]->getName() ?>"
