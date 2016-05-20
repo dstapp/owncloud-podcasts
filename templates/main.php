@@ -20,7 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-script("podcasts", "vendor/angular.min");
+vendor_script("podcasts", "angular/angular.min");
+vendor_script("podcasts", "angular-audio/app/angular.audio");
 script("podcasts", "podcasts");
 style("podcasts", "default");
 ?>
@@ -63,28 +64,19 @@ style("podcasts", "default");
 
     </div>
     <div id="app-content" ng-controller="EpisodeListController as list">
-        <div class="podcasts--list" data-endpoint="<?php echo $_["episode_endpoint"]; ?>"
-             data-player-url="<?php echo $_["player_url"]; ?>">
-            <img src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
+        <div class="podcasts--list">
+            <img src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>" ng-show="loading" />
+
+            <div class="list--item" ng-repeat="episode in episodes">
+                <div class="item--cover-container">
+                    <img src="{{episode.cover}}" class="cover-container--cover" ng-click="list.select(episode)" ng-class="{'is--active' : list.isSelected(episode)}" ng-dblclick="list.openPlayer(episode)" />
+                    <i class="cover-container--icon cover-container--icon-new icon-info-white" ng-show="episode.duration == 0 && episode.played == 0"></i>
+                    <i class="cover-container--icon cover-container--icon-playing icon-play" ng-show="episode.duration > 0 && episode.played == 0"></i>
+                </div>
+                <div class="item--description">
+                    {{episode.name}}
+                </div>
+            </div>
         </div>
     </div>
-
-    <script type="text/html" id="item_tmpl">
-        <div class="list--item" data-url="<&= escapeHTML(playerUrl) &><&= escapeHTML(val.id) &>"
-             data-feed-id="<&= escapeHTML(val.feed_id) &>">
-            <div class="item--cover-container">
-                <img src="<&= val.cover &>" class="cover-container--cover"/>
-                <& if (val.duration == 0 && val.played == 0) { &>
-                <i class="cover-container--icon cover-container--icon-new icon-info-white"></i>
-                <& } &>
-
-                <& if (val.duration > 0 && val.played == 0) { &>
-                <i class="cover-container--icon cover-container--icon-playing icon-play"></i>
-                <& } &>
-            </div>
-            <div class="item--description">
-                <&= escapeHTML(val.name) &>
-            </div>
-        </div>
-    </script>
 </div>

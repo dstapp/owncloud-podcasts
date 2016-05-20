@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 class SidebarController
 
-  @$inject: ['$scope', 'FeedService']
+  @$inject: [ "$scope", "FeedService" ]
   constructor: ($scope, FeedService) ->
     @scope = $scope
     @feedService = FeedService

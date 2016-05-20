@@ -18,8 +18,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
-app = angular.module "Podcasts", []#[ "ngAudio" ]
-
-app.config ["$httpProvider", ($httpProvider) ->
-  $httpProvider.defaults.headers.common.requesttoken = oc_requesttoken;
+angular.module("Podcasts").factory "EpisodeService", ["$http", ($http) ->
+  new class EpisodeService
+    all: ->
+      apiUrl = OC.generateUrl("/apps/podcasts/episodes")
+      $http.get apiUrl
 ]

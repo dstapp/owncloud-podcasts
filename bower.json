@@ -1,0 +1,11 @@
+{
+  "name": "owncloud-podcasts",
+  "version": "0.8.2",
+  "authors": [
+    "David Prandzioch"
+  ],
+  "description": "ownCloud Podcast player",
+  "dependencies": {
+    "angular-audio": "*"
+  }
+}

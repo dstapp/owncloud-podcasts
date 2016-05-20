@@ -19,8 +19,37 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
 class EpisodeListController
-  @$inject: ['$scope']
-  constructor: (@scope) ->
-    #alert("hey")
+
+  @$inject: [ "$scope", "EpisodeService" ]
+  constructor: ($scope, EpisodeService) ->
+    @scope = $scope
+    @episodeService = EpisodeService
+    @scope.loading = no
+    @scope.selectedEpisode = null
+
+    @loadEpisodes()
+
+  select: (episode) ->
+    if @isSelected(episode)
+      @scope.selectedEpisode = null
+    else
+      @scope.selectedEpisode = episode
+
+  isSelected: (episode) ->
+    @scope.selectedEpisode == episode
+
+  loadEpisodes: () ->
+    @scope.loading = yes
+    @episodeService.all().then (response) =>
+      @scope.episodes = response.data.data
+      @scope.loading = no
+    , (error) ->
+      alert "Could not load the episodes"
+
+  openPlayer: (episode) ->
+    playerUrl = OC.generateUrl("/apps/podcasts/player/" + episode.id)
+    window.open playerUrl, "_blank", "toolbar=no, status=no, menubar=no, resizable=no, height=240,width=500"
+    return true
+
 
 angular.module("Podcasts").controller "EpisodeListController", EpisodeListController

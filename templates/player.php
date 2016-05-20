@@ -24,7 +24,7 @@ script("podcasts", "vendor/angular.min");
 style("podcasts", "default");
 script("podcasts", "podcasts");
 ?>
-<div id="player" class="player" data-url="<?php echo $_["episode"]->getUrl() ?>"
+<div id="player" class="player" ng-controller="PlayerController as playerCtrl" data-url="<?php echo $_["episode"]->getUrl() ?>"
      data-name="<?php echo $_["episode"]->getName() ?>"
      data-current-time="<?php echo $_["episode"]->getCurrentSecond() ?>"
      data-update-endpoint="<?php echo $_["update_endpoint"] ?>"
