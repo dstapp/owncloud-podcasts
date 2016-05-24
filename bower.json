@@ -6,6 +6,12 @@
   ],
   "description": "ownCloud Podcast player",
   "dependencies": {
-    "angular-audio": "*"
+    "angular": "~1.5.0",
+    "videogular": "^1.4.3",
+    "videogular-controls": "^1.4.3",
+    "videogular-poster": "^1.4.3",
+    "videogular-angulartics": "^1.4.3",
+    "videogular-buffering": "^1.4.3",
+    "videogular-themes-default": "^1.4.3"
   }
 }

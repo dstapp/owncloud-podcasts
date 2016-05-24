@@ -27,6 +27,7 @@ use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCA\Podcasts\Db\EpisodeMapper;
+use \OCA\Podcasts\Db\FeedMapper;
 
 /**
  * Class EpisodesController
@@ -47,6 +48,11 @@ class EpisodesController extends ApiController
     protected $episodeMapper;
 
     /**
+     * @var FeedMapper
+     */
+    protected $feedMapper;
+
+    /**
      * @var IRequest
      */
     protected $request;
@@ -57,19 +63,22 @@ class EpisodesController extends ApiController
      * @param string        $appName
      * @param IRequest      $request
      * @param string        $userId
-     * @param EpisodeMapper $mapper
+     * @param EpisodeMapper $episodeMapper
+     * @param FeedMapper    $feedMapper
      */
     public function __construct(
         $appName,
         IRequest $request,
         $userId,
-        EpisodeMapper $mapper
+        EpisodeMapper $episodeMapper,
+        FeedMapper $feedMapper
     ) {
         parent::__construct($appName, $request);
 
         $this->userId = $userId;
         $this->request = $request;
-        $this->episodeMapper = $mapper;
+        $this->episodeMapper = $episodeMapper;
+        $this->feedMapper = $feedMapper;
     }
 
     /**
@@ -86,6 +95,51 @@ class EpisodesController extends ApiController
 
         return new JSONResponse([
             "data"    => $this->episodeMapper->getEpisodes($this->userId, $feedId, 1000),
+            "success" => true,
+        ]);
+    }
+
+    /**
+     * AJAX / Returns a single episode
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @return JSONResponse
+     */
+    public function getEpisode($id)
+    {
+        $episode = (array) $this->episodeMapper->getEpisode((int) $id, $this->userId);
+        $feed = $this->feedMapper->getFeed((int) $episode["feedId"], $this->userId);
+
+        $ext = pathinfo($episode["url"], PATHINFO_EXTENSION);
+
+        switch ($ext) {
+            case "m4a":
+            case "mp4":
+                $mimeType = "audio/mp4";
+                break;
+
+            case "ogg":
+                $mimeType = "audio/ogg; codecs=vorbis";
+                break;
+
+            case "opus":
+                $mimeType = "audio/ogg; codecs=opus";
+                break;
+
+            default:
+                $mimeType = "audio/mpeg";
+                break;
+        }
+
+        $episode = array_merge($episode, [
+            "mimeType" => $mimeType,
+            "cover" => $feed->getCover()
+        ]);
+
+        return new JSONResponse([
+            "data"    => $episode,
             "success" => true,
         ]);
     }

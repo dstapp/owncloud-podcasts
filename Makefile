@@ -24,6 +24,9 @@ update-composer: install-composer
 	rm -f composer.lock
 	php composer.phar install --prefer-dist
 
+build-assets:
+    grunt dist
+
 watch-scss:
 	sass --watch src/scss/:css/
 
@@ -37,7 +40,7 @@ watch-coffeescript: compile-coffeescript
 compile-coffeescript:
 	coffee -co js/ src/coffeescript
 
-appstore: clean install-deps compile-scss compile-coffeescript
+appstore: clean install-deps build-assets
 	mkdir -p $(appstore_dir)
 	tar cvzf $(appstore_dir)/$(package_name).tar.gz $(project_dir) \
 	--exclude=$(project_dir)/.git \

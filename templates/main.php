@@ -20,10 +20,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-vendor_script("podcasts", "angular/angular.min");
-vendor_script("podcasts", "angular-audio/app/angular.audio");
-script("podcasts", "podcasts");
 style("podcasts", "default");
+vendor_script("podcasts", "angular/angular.min");
+vendor_script("podcasts", "angular-sanitize/angular-sanitize.min");
+vendor_script("podcasts", "videogular/videogular");
+vendor_script("podcasts", "videogular-controls/vg-controls");
+vendor_script("podcasts", "videogular-buffering/vg-buffering");
+vendor_script("podcasts", "videogular-poster/vg-poster");
+script("podcasts", "podcasts");
+
 ?>
 <div ng-app="Podcasts">
     <div id="app-navigation" class="app--navigation" ng-controller="SidebarController as sidebar">

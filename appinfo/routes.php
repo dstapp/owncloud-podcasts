@@ -32,6 +32,11 @@ $application->registerRoutes($this, [
             "verb" => "GET",
         ],
         [
+            "name" => "web_view#player_template",
+            "url"  => "/playerTemplate",
+            "verb" => "GET",
+        ],
+        [
             "name" => "web_view#player",
             "url"  => "/player/{id}",
             "verb" => "GET",
@@ -39,6 +44,11 @@ $application->registerRoutes($this, [
         [
             "name" => "episodes#get_episodes",
             "url"  => "/episodes",
+            "verb" => "GET",
+        ],
+        [
+            "name" => "episodes#get_episode",
+            "url"  => "/episodes/{id}",
             "verb" => "GET",
         ],
         [

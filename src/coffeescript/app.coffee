@@ -18,7 +18,13 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
-app = angular.module "Podcasts", []#[ "ngAudio" ]
+app = angular.module "Podcasts", [
+  "ngSanitize",
+  "com.2fdevs.videogular",
+  "com.2fdevs.videogular.plugins.controls",
+  "com.2fdevs.videogular.plugins.buffering",
+  "com.2fdevs.videogular.plugins.poster"
+]
 
 app.config ["$httpProvider", ($httpProvider) ->
   $httpProvider.defaults.headers.common.requesttoken = oc_requesttoken;

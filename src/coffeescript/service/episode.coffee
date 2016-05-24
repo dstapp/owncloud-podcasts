@@ -23,4 +23,12 @@ angular.module("Podcasts").factory "EpisodeService", ["$http", ($http) ->
     all: ->
       apiUrl = OC.generateUrl("/apps/podcasts/episodes")
       $http.get apiUrl
+
+    get: (id) ->
+      apiUrl = OC.generateUrl("/apps/podcasts/episodes/" + id)
+      $http.get apiUrl
+
+    updatePosition: (id, second, duration) ->
+      apiUrl = OC.generateUrl("/apps/podcasts/episodes/" + id + "/position")
+      $http.post apiUrl, second: second, duration: duration
 ]

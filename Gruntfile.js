@@ -41,4 +41,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('dev', [ 'coffee', 'sass', 'watch' ]);
+    grunt.registerTask('dist', [ 'coffee', 'sass' ]);
 };
