@@ -30,13 +30,14 @@ vendor_script("podcasts", "videogular-poster/vg-poster");
 script("podcasts", "podcasts");
 
 ?>
-<div ng-app="Podcasts">
+<div ng-app="Podcasts" class="app--player">
     <div class="player" ng-controller="PlayerController as controller" data-id="<?php echo $_["id"]; ?>">
+        <div class="player--cover" style="background: url('<?php echo $_["feed"]->getCover(); ?>') no-repeat center center fixed; background-size: 100% auto;"></div>
         <videogular vg-theme="controller.config.theme.url"
                     vg-start-time="startTime"
                     vg-player-ready="controller.onPlayerReady($API)"
                     vg-update-time="controller.onUpdateTime($currentTime, $duration)"
-                    class="videogular-container">
+                    class="videogular-container audio">
             <vg-media vg-src="controller.config.sources" vg-type="audio"></vg-media>
 
             <vg-controls>
@@ -52,7 +53,7 @@ script("podcasts", "podcasts");
             </vg-controls>
 
             <vg-buffering></vg-buffering>
-            <vg-poster vg-url='controller.config.plugins.poster'></vg-poster>
+            <div class="player--clear"></div>
         </videogular>
     </div>
 </div>

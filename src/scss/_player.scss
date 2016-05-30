@@ -18,50 +18,73 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.videogular-container {
-    width: 100%;
-    height: 320px;
-    margin: auto;
-    overflow: hidden;
-}
+.app--player {
+    height: 100%;
 
-.videogular-container.audio {
-    height: 50px;
-}
+    .player {
+        height: 100%;
 
-@media (min-width: 1200px) {
-    .videogular-container {
-        width: 1170px;
-        height: 658.125px;
-    }
+        .player--cover {
+            width: 100%;
+            height: 100%;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
 
-    .videogular-container.audio {
-        width: 1170px;
-        height: 50px;
-    }
-}
+        .player--clear {
+            clear: both;
+        }
 
-@media (min-width: 992px) and (max-width: 1199px) {
-    .videogular-container {
-        width: 940px;
-        height: 528.75px;
-    }
+        .videogular-container {
+            width: 100%;
+            height: 320px;
+            margin: auto;
+            overflow: hidden;
+        }
 
-    .videogular-container.audio {
-        width: 940px;
-        height: 50px;
-    }
-}
+        .videogular-container.audio {
+            height: 50px;
+            position: absolute;
+            bottom: 0;
+        }
 
-@media (min-width: 768px) and (max-width: 991px) {
-    .videogular-container {
-        width: 728px;
-        height: 409.5px;
-    }
+        @media (min-width: 1200px) {
+            .videogular-container {
+                width: 1170px;
+                height: 658.125px;
+            }
 
-    .videogular-container.audio {
-        width: 728px;
-        height: 50px;
+            .videogular-container.audio {
+                width: 1170px;
+                height: 50px;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .videogular-container {
+                width: 940px;
+                height: 528.75px;
+            }
+
+            .videogular-container.audio {
+                width: 940px;
+                height: 50px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .videogular-container {
+                width: 728px;
+                height: 409.5px;
+            }
+
+            .videogular-container.audio {
+                width: 728px;
+                height: 50px;
+            }
+        }
     }
 }
 

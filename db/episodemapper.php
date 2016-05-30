@@ -133,6 +133,26 @@ class EpisodeMapper extends Mapper
     }
 
     /**
+     * Mark episode as played / revoke played flag
+     *
+     * @param string $uid
+     * @param int    $id
+     * @param bool   $status
+     *
+     * @return \PDOStatement
+     */
+    public function updatePlayedStatus($uid, $id, $status)
+    {
+        $id = (int)$id;
+        $status = (bool)$status;
+
+        return $this->execute(
+            "UPDATE *PREFIX*podcasts_episodes SET played = ? WHERE id = ? AND uid = ?",
+            [$status, $id, $uid]
+        );
+    }
+
+    /**
      * Deletes all episodes that belong to a feed by it's ID
      *
      * @param int    $feedId

@@ -48,7 +48,7 @@ class EpisodeListController
 
   openPlayer: (episode) ->
     playerUrl = OC.generateUrl("/apps/podcasts/player/" + episode.id)
-    window.open playerUrl, "_blank", "toolbar=no, status=no, menubar=no, resizable=no, height=240,width=500"
+    window.open playerUrl, "_blank", "toolbar=no, status=no, menubar=no, resizable=no, height=370,width=500"
     return true
 
 

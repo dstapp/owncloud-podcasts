@@ -161,13 +161,21 @@ class EpisodesController extends ApiController
         $second = (int)$this->request->getParam("second");
         $duration = (int)$this->request->getParam("duration");
 
+        $playedUpdateResult = true;
+
+        if (($second + 60) > $duration) {
+            // remainingPlaytime < 60 sec -> played -> reset position
+            $playedUpdateResult = (bool)$this->episodeMapper->updatePlayedStatus($this->userId, $id, true);
+            $second = 0;
+        }
+
         $result = (bool)$this->episodeMapper->updatePosition($this->userId, $id, $second, $duration);
 
         return new JSONResponse(
             [
-                "success" => (true === $result),
+                "success" => (true === $result && true === $playedUpdateResult),
             ],
-            (true === $result) ? Http::STATUS_OK : Http::STATUS_BAD_REQUEST
+            (true === $result && true === $playedUpdateResult) ? Http::STATUS_OK : Http::STATUS_BAD_REQUEST
         );
     }
 

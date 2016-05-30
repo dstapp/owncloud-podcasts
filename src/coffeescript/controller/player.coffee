@@ -48,15 +48,14 @@ class PlayerController
         ]
         theme:
           url: OC.getRootPath() + "/apps/podcasts/vendor/videogular-themes-default/videogular.css"
-        plugins:
-          poster: episode.cover
     , (error) ->
       alert "Could not load the episode"
 
     @scope.loading = no
 
   onUpdateTime: ($currentTime, $duration) ->
-    if $currentTime - @lastUpdateTime > 10 && @updateLocked == no
+    console.log "onTimeUpdate"
+    if (($currentTime - @lastUpdateTime) > 10 || @lastUpdateTime > $currentTime) && @updateLocked == no
       console.log "update time"
       @updateLocked = yes
       @episodeService.updatePosition(@id, $currentTime, $duration).then (response) =>

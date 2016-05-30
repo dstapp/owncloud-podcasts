@@ -105,7 +105,7 @@ class WebViewController extends Controller
      */
     public function playerTemplate()
     {
-        $response = new TemplateResponse("podcasts", "podcast-player", "blank");
+        $response = new TemplateResponse("podcasts", "podcast-player", [], "blank");
 
         $policy = new ContentSecurityPolicy();
         $policy->addAllowedFrameDomain("'self'");
@@ -133,8 +133,13 @@ class WebViewController extends Controller
     {
         $id = (int)$id;
 
+        $episode = $this->episodeMapper->getEpisode($id, $this->userId);
+        $feed = $this->feedMapper->getFeed($episode->getFeedId(), $this->userId);
+
         $params = [
-            "id" => $id
+            "id"      => $id,
+            "episode" => $episode,
+            "feed"    => $feed,
         ];
 
         $response = new TemplateResponse("podcasts", "player", $params);
