@@ -18,7 +18,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
-'use strict';
+'use strict'
 
 class PlayerController
 
@@ -27,11 +27,14 @@ class PlayerController
     @scope = $scope
     @sce = $sce
     @episodeService = EpisodeService
+
     @config = {}
     @id = $attrs.id
     @lastUpdateTime = 0
     @updateLocked = no
     @api = null
+
+    @vendorPath = OC.getRootPath() + "/apps/podcasts/vendor"
 
     @episodeService.get(@id).then (response) =>
       episode = response.data.data
@@ -47,7 +50,7 @@ class PlayerController
           }
         ]
         theme:
-          url: OC.getRootPath() + "/apps/podcasts/vendor/videogular-themes-default/videogular.css"
+          url: @vendorPath + "/videogular-themes-default/videogular.css"
     , (error) ->
       alert "Could not load the episode"
 

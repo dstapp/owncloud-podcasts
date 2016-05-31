@@ -40,7 +40,7 @@ class EpisodeListController
 
   onFeedFilterChanged: () =>
     @scope.filteredFeedId = @broadcastService.filteredFeedId
-    #@loadEpisodes()
+    @loadEpisodes()
 
   select: (episode) ->
     if @isSelected(episode)
@@ -61,8 +61,11 @@ class EpisodeListController
 
   openPlayer: (episode) ->
     playerUrl = OC.generateUrl "/apps/podcasts/player/" + episode.id
-    window.open playerUrl, "_blank", "toolbar=no, status=no, menubar=no, resizable=no, height=370,width=500"
+    window.open playerUrl, "_blank", "resizable=no, height=370, width=500"
     return true
 
 
-angular.module("Podcasts").controller "EpisodeListController", EpisodeListController
+angular.module("Podcasts").controller(
+  "EpisodeListController",
+  EpisodeListController
+)

@@ -13,7 +13,11 @@ clean:
 install-composer:
 	curl -sS https://getcomposer.org/installer | php
 
-install-deps: install-composer-deps
+install-grunt-deps:
+	npm install
+
+install-deps: install-composer-deps install-grunt-deps
+	bower install
 
 install-composer-deps: install-composer
 	php composer.phar install
@@ -25,7 +29,7 @@ update-composer: install-composer
 	php composer.phar install --prefer-dist
 
 build-assets:
-    grunt dist
+	grunt dist
 
 appstore: clean install-deps build-assets
 	mkdir -p $(appstore_dir)

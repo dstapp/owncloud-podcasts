@@ -1,90 +1,90 @@
-/**
- * Copyright (c) 2016 David Prandzioch
- * https://github.com/dprandzioch/owncloud-podcasts
- *
- * This file is part of owncloud-podcasts.
- *
- * owncloud-podcasts is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+//
+// Copyright (c) 2016 David Prandzioch
+// https://github.com/dprandzioch/owncloud-podcasts
+//
+// This file is part of owncloud-podcasts.
+//
+// owncloud-podcasts is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+//
 
 .app--player {
+  height: 100%;
+
+  .player {
     height: 100%;
 
-    .player {
-        height: 100%;
-
-        .player--cover {
-            width: 100%;
-            height: 100%;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-
-        .player--clear {
-            clear: both;
-        }
-
-        .videogular-container {
-            width: 100%;
-            height: 320px;
-            margin: auto;
-            overflow: hidden;
-        }
-
-        .videogular-container.audio {
-            height: 50px;
-            position: absolute;
-            bottom: 0;
-        }
-
-        @media (min-width: 1200px) {
-            .videogular-container {
-                width: 1170px;
-                height: 658.125px;
-            }
-
-            .videogular-container.audio {
-                width: 1170px;
-                height: 50px;
-            }
-        }
-
-        @media (min-width: 992px) and (max-width: 1199px) {
-            .videogular-container {
-                width: 940px;
-                height: 528.75px;
-            }
-
-            .videogular-container.audio {
-                width: 940px;
-                height: 50px;
-            }
-        }
-
-        @media (min-width: 768px) and (max-width: 991px) {
-            .videogular-container {
-                width: 728px;
-                height: 409.5px;
-            }
-
-            .videogular-container.audio {
-                width: 728px;
-                height: 50px;
-            }
-        }
+    .player--cover {
+      width: 100%;
+      height: 100%;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
     }
+
+    .player--clear {
+      clear: both;
+    }
+
+    .videogular-container {
+      width: 100%;
+      height: 320px;
+      margin: auto;
+      overflow: hidden;
+    }
+
+    .videogular-container.audio {
+      height: 50px;
+      position: absolute;
+      bottom: 0;
+    }
+
+    @media (min-width: 1200px) {
+      .videogular-container {
+        width: 1170px;
+        height: 658.125px;
+      }
+
+      .videogular-container.audio {
+        width: 1170px;
+        height: 50px;
+      }
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) {
+      .videogular-container {
+        width: 940px;
+        height: 528.75px;
+      }
+
+      .videogular-container.audio {
+        width: 940px;
+        height: 50px;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+      .videogular-container {
+        width: 728px;
+        height: 409.5px;
+      }
+
+      .videogular-container.audio {
+        width: 728px;
+        height: 50px;
+      }
+    }
+  }
 }
 

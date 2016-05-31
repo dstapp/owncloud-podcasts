@@ -94,7 +94,8 @@ class EpisodesController extends ApiController
         $feedId = $this->request->getParam("feedId", null);
 
         return new JSONResponse([
-            "data"    => $this->episodeMapper->getEpisodes($this->userId, $feedId, 1000),
+            "data"    => $this->episodeMapper->getEpisodes($this->userId,
+                $feedId, 1000),
             "success" => true,
         ]);
     }
@@ -105,12 +106,16 @@ class EpisodesController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      *
+     * @param int $episodeId
+     *
      * @return JSONResponse
      */
-    public function getEpisode($id)
+    public function getEpisode($episodeId)
     {
-        $episode = (array) $this->episodeMapper->getEpisode((int) $id, $this->userId);
-        $feed = $this->feedMapper->getFeed((int) $episode["feedId"], $this->userId);
+        $episode = (array)$this->episodeMapper->getEpisode((int)$episodeId,
+            $this->userId);
+        $feed = $this->feedMapper->getFeed((int)$episode["feedId"],
+            $this->userId);
 
         $ext = pathinfo($episode["url"], PATHINFO_EXTENSION);
 
@@ -135,7 +140,7 @@ class EpisodesController extends ApiController
 
         $episode = array_merge($episode, [
             "mimeType" => $mimeType,
-            "cover" => $feed->getCover()
+            "cover"    => $feed->getCover(),
         ]);
 
         return new JSONResponse([
@@ -150,13 +155,13 @@ class EpisodesController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @param int $id
+     * @param int $episodeId
      *
      * @return JSONResponse
      */
-    public function updatePosition($id)
+    public function updatePosition($episodeId)
     {
-        $id = (int)$id;
+        $episodeId = (int)$episodeId;
 
         $second = (int)$this->request->getParam("second");
         $duration = (int)$this->request->getParam("duration");
@@ -165,11 +170,21 @@ class EpisodesController extends ApiController
 
         if (($second + 60) > $duration) {
             // remainingPlaytime < 60 sec -> played -> reset position
-            $playedUpdateResult = (bool)$this->episodeMapper->updatePlayedStatus($this->userId, $id, true);
+            $playedUpdateResult = (bool)$this->episodeMapper->updatePlayedStatus(
+                $this->userId,
+                $episodeId,
+                true
+            );
+
             $second = 0;
         }
 
-        $result = (bool)$this->episodeMapper->updatePosition($this->userId, $id, $second, $duration);
+        $result = (bool)$this->episodeMapper->updatePosition(
+            $this->userId,
+            $episodeId,
+            $second,
+            $duration
+        );
 
         return new JSONResponse(
             [

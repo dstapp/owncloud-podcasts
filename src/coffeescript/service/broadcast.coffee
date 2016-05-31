@@ -18,18 +18,19 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
-angular.module("Podcasts").factory "BroadcastService", ["$rootScope", ($rootScope) ->
-  @broadcastService = {}
+angular.module("Podcasts").factory "BroadcastService", ["$rootScope",
+  ($rootScope) ->
+    @broadcastService = {}
 
-  @broadcastService.announceEpisodeDataChanged = () ->
-    $rootScope.$broadcast("episodeDataChanged");
+    @broadcastService.announceEpisodeDataChanged = () ->
+      $rootScope.$broadcast "episodeDataChanged"
 
-  @broadcastService.announceFeedDataChanged = () ->
-    $rootScope.$broadcast("feedDataChanged");
+    @broadcastService.announceFeedDataChanged = () ->
+      $rootScope.$broadcast "feedDataChanged"
 
-  @broadcastService.announceFeedFilterChanged = (filteredFeedId) ->
-    @filteredFeedId = filteredFeedId
-    $rootScope.$broadcast("feedFilterChanged");
+    @broadcastService.announceFeedFilterChanged = (filteredFeedId) ->
+      @filteredFeedId = filteredFeedId
+      $rootScope.$broadcast "feedFilterChanged"
 
-  return @broadcastService
+    return @broadcastService
 ]

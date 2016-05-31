@@ -111,17 +111,17 @@ class FeedsController extends ApiController
      *
      * @NoAdminRequired
      *
-     * @param int $id
+     * @param int $feedId
      *
      * @return JSONResponse
      */
-    public function deleteFeed($id = null)
+    public function deleteFeed($feedId = null)
     {
         $feed = new Feed();
-        $feed->setId($id);
+        $feed->setId($feedId);
 
         $this->feedMapper->delete($feed);
-        $this->episodeMapper->deleteByFeedId($id, $this->userId);
+        $this->episodeMapper->deleteByFeedId($feedId, $this->userId);
 
         return new JSONResponse([
             "success" => true,

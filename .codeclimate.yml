@@ -1,26 +1,34 @@
+---
 engines:
-  markdownlint:
+  csslint:
+    enabled: false
+  coffeelint:
     enabled: true
   duplication:
     enabled: true
     config:
       languages:
       - php
+  eslint:
+    enabled: false
   fixme:
     enabled: true
   phpmd:
     enabled: true
-  coffeelint:
-    enabled: true
- scss-lint:
-    enabled: true
   markdownlint:
+    enabled: true
+  scss-lint:
     enabled: true
 ratings:
   paths:
-  - "**.php"
-  - "**.coffee"
   - "**.scss"
+  - "**.coffee"
+  - "**.php"
 exclude_paths:
-- db/
+- node_modules/
 - tests/
+- vendor/
+- css/
+- js/
+- build/
+- .sass-cache/

@@ -36,11 +36,11 @@ class EpisodeMapper extends Mapper
     /**
      * Constructor
      *
-     * @param IDBConnection $db
+     * @param IDBConnection $dbConnection
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConnection)
     {
-        parent::__construct($db, "podcasts_episodes");
+        parent::__construct($dbConnection, "podcasts_episodes");
     }
 
     /**
@@ -82,12 +82,10 @@ class EpisodeMapper extends Mapper
      *
      * @param string $uid
      * @param int    $feedId
-     * @param int    $limit
-     * @param int    $offset
      *
      * @return array
      */
-    public function getEpisodes($uid, $feedId = null, $limit = null, $offset = null)
+    public function getEpisodes($uid, $feedId = null)
     {
         $params = [$uid];
 
@@ -114,21 +112,21 @@ class EpisodeMapper extends Mapper
      * Updates the playback position of an episode
      *
      * @param string $uid
-     * @param int    $id
+     * @param int    $episodeId
      * @param int    $second
      * @param int    $duration
      *
      * @return \PDOStatement
      */
-    public function updatePosition($uid, $id, $second, $duration)
+    public function updatePosition($uid, $episodeId, $second, $duration)
     {
-        $id = (int)$id;
+        $episodeId = (int)$episodeId;
         $second = (int)$second;
         $duration = (int)$duration;
 
         return $this->execute(
             "UPDATE *PREFIX*podcasts_episodes SET current_second = ?, duration = ? WHERE id = ? AND uid = ?",
-            [$second, $duration, $id, $uid]
+            [$second, $duration, $episodeId, $uid]
         );
     }
 
@@ -136,19 +134,19 @@ class EpisodeMapper extends Mapper
      * Mark episode as played / revoke played flag
      *
      * @param string $uid
-     * @param int    $id
+     * @param int    $episodeId
      * @param bool   $status
      *
      * @return \PDOStatement
      */
-    public function updatePlayedStatus($uid, $id, $status)
+    public function updatePlayedStatus($uid, $episodeId, $status)
     {
-        $id = (int)$id;
+        $episodeId = (int)$episodeId;
         $status = (bool)$status;
 
         return $this->execute(
             "UPDATE *PREFIX*podcasts_episodes SET played = ? WHERE id = ? AND uid = ?",
-            [$status, $id, $uid]
+            [$status, $episodeId, $uid]
         );
     }
 
@@ -173,17 +171,17 @@ class EpisodeMapper extends Mapper
     /**
      * Loads an episode by it's ID
      *
-     * @param int    $id
+     * @param int    $episodeId
      * @param string $uid
      *
      * @return \OCP\AppFramework\Db\Entity
      */
-    public function getEpisode($id, $uid)
+    public function getEpisode($episodeId, $uid)
     {
-        $id = (int)$id;
+        $episodeId = (int)$episodeId;
 
         $sql = "SELECT * FROM *PREFIX*podcasts_episodes WHERE id = ? AND uid = ?";
 
-        return $this->findEntity($sql, [$id, $uid]);
+        return $this->findEntity($sql, [$episodeId, $uid]);
     }
 }

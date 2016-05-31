@@ -125,19 +125,19 @@ class WebViewController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @param int $id
+     * @param int $episodeId
      *
      * @return TemplateResponse
      */
-    public function player($id)
+    public function player($episodeId)
     {
-        $id = (int)$id;
+        $episodeId = (int)$episodeId;
 
-        $episode = $this->episodeMapper->getEpisode($id, $this->userId);
+        $episode = $this->episodeMapper->getEpisode($episodeId, $this->userId);
         $feed = $this->feedMapper->getFeed($episode->getFeedId(), $this->userId);
 
         $params = [
-            "id"      => $id,
+            "id"      => $episodeId,
             "episode" => $episode,
             "feed"    => $feed,
         ];
