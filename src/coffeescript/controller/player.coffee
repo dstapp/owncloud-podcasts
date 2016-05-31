@@ -54,9 +54,7 @@ class PlayerController
     @scope.loading = no
 
   onUpdateTime: ($currentTime, $duration) ->
-    console.log "onTimeUpdate"
-    if (($currentTime - @lastUpdateTime) > 10 || @lastUpdateTime > $currentTime) && @updateLocked == no
-      console.log "update time"
+    if (($currentTime - @lastUpdateTime) > 30 || @lastUpdateTime > $currentTime) && @updateLocked == no
       @updateLocked = yes
       @episodeService.updatePosition(@id, $currentTime, $duration).then (response) =>
         console.log "time updated"
@@ -67,7 +65,6 @@ class PlayerController
         @updateLocked = no
 
   onPlayerReady: ($API) =>
-    console.log "onPlayerReady"
     @api = $API
 
 angular.module("Podcasts").controller "PlayerController", PlayerController

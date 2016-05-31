@@ -10,7 +10,6 @@ where you left off.
 
 ## Todo
 
-* Volume control
 * Full translation
 * Beautify UI
 * Fix CLRF

@@ -27,19 +27,6 @@ update-composer: install-composer
 build-assets:
     grunt dist
 
-watch-scss:
-	sass --watch src/scss/:css/
-
-compile-scss:
-	sass --no-cache --update --style compressed --sourcemap=none --scss src/scss/:css/
-
-watch-coffeescript: compile-coffeescript
-	#coffee --watch -o js/ --compile src/coffeescript/*.coffee
-	coffee -cwo js/ src/coffeescript
-
-compile-coffeescript:
-	coffee -co js/ src/coffeescript
-
 appstore: clean install-deps build-assets
 	mkdir -p $(appstore_dir)
 	tar cvzf $(appstore_dir)/$(package_name).tar.gz $(project_dir) \
