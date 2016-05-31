@@ -78,7 +78,8 @@ class EpisodeMapper extends Mapper
     }
 
     /**
-     * Gets a list of episodes for the current user (limited by feed if ID is supplied)
+     * Gets a list of episodes for the current user (limited by feed if ID is
+     * supplied)
      *
      * @param string $uid
      * @param int    $feedId
@@ -174,14 +175,15 @@ class EpisodeMapper extends Mapper
      * @param int    $episodeId
      * @param string $uid
      *
-     * @return \OCP\AppFramework\Db\Entity
+     * @return array
      */
     public function getEpisode($episodeId, $uid)
     {
         $episodeId = (int)$episodeId;
 
         $sql = "SELECT * FROM *PREFIX*podcasts_episodes WHERE id = ? AND uid = ?";
+        $stmt = $this->execute($sql, [$episodeId, $uid]);
 
-        return $this->findEntity($sql, [$episodeId, $uid]);
+        return $stmt->fetch();
     }
 }

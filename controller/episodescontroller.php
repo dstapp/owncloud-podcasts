@@ -112,10 +112,15 @@ class EpisodesController extends ApiController
      */
     public function getEpisode($episodeId)
     {
-        $episode = (array)$this->episodeMapper->getEpisode((int)$episodeId,
-            $this->userId);
-        $feed = $this->feedMapper->getFeed((int)$episode["feedId"],
-            $this->userId);
+        $episode = (array)$this->episodeMapper->getEpisode(
+            (int)$episodeId,
+            $this->userId
+        );
+
+        $feed = $this->feedMapper->getFeed(
+            (int)$episode["feed_id"],
+            $this->userId
+        );
 
         $ext = pathinfo($episode["url"], PATHINFO_EXTENSION);
 

@@ -138,7 +138,8 @@ class EpisodesControllerTest extends TestCase
             $this->container->query("AppName"),
             $request,
             "phpunit",
-            $this->episodeMapper
+            $this->episodeMapper,
+            $this->feedMapper
         );
 
         $response = $controller->getEpisodes();
@@ -160,6 +161,45 @@ class EpisodesControllerTest extends TestCase
     }
 
     /**
+     * Test getEpisode()
+     */
+    public function testGetEpisode()
+    {
+        $request = $this->getMockBuilder('\OCP\IRequest')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $controller = new EpisodesController(
+            $this->container->query("AppName"),
+            $request,
+            "phpunit",
+            $this->episodeMapper,
+            $this->feedMapper
+        );
+        
+        $episodes = $this->episodeMapper->getEpisodes("phpunit");
+        $episode = $episodes[0];
+
+        $response = $controller->getEpisode($episode["id"]);
+        $json = $response->render();
+        $data = json_decode($json, true);
+
+        $this->assertTrue($data["success"]);
+        $this->assertArrayHasKey("data", $data);
+        $this->assertArrayHasKey("id", $data["data"]);
+        $this->assertArrayHasKey("feed_id", $data["data"]);
+        $this->assertArrayHasKey("uid", $data["data"]);
+        $this->assertArrayHasKey("name", $data["data"]);
+        $this->assertArrayHasKey("created_at", $data["data"]);
+        $this->assertArrayHasKey("url", $data["data"]);
+        $this->assertArrayHasKey("current_second", $data["data"]);
+        $this->assertArrayHasKey("duration", $data["data"]);
+        $this->assertArrayHasKey("played", $data["data"]);
+        $this->assertArrayHasKey("cover", $data["data"]);
+        $this->assertArrayHasKey("mimeType", $data["data"]);
+    }
+
+    /**
      * Test updatePosition()
      */
     public function testUpdatePosition()
@@ -170,13 +210,14 @@ class EpisodesControllerTest extends TestCase
 
         $request->expects($this->any())
             ->method("getParam")
-            ->will($this->onConsecutiveCalls(99, 100));
+            ->will($this->onConsecutiveCalls(25, 100));
 
         $controller = new EpisodesController(
             $this->container->query("AppName"),
             $request,
             "phpunit",
-            $this->episodeMapper
+            $this->episodeMapper,
+            $this->feedMapper
         );
 
         $episodes = $this->episodeMapper->getEpisodes("phpunit");
@@ -191,8 +232,46 @@ class EpisodesControllerTest extends TestCase
 
         $episode = $this->episodeMapper->getEpisode($episode["id"], "phpunit");
 
-        $this->assertEquals(99, $episode->getCurrentSecond());
-        $this->assertEquals(100, $episode->getDuration());
+        $this->assertEquals(25, $episode["current_second"]);
+        $this->assertEquals(100, $episode["duration"]);
+    }
+
+    /**
+     * Test updatePosition() with less then one minute to play which should
+     * lead to a position reset to 0
+     */
+    public function testUpdatePositionValueReset()
+    {
+        $request = $this->getMockBuilder('\OCP\IRequest')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $request->expects($this->any())
+            ->method("getParam")
+            ->will($this->onConsecutiveCalls(89, 100));
+
+        $controller = new EpisodesController(
+            $this->container->query("AppName"),
+            $request,
+            "phpunit",
+            $this->episodeMapper,
+            $this->feedMapper
+        );
+
+        $episodes = $this->episodeMapper->getEpisodes("phpunit");
+
+        $episode = $episodes[0];
+
+        $response = $controller->updatePosition($episode["id"]);
+        $json = $response->render();
+        $data = json_decode($json, true);
+
+        $this->assertTrue($data["success"]);
+
+        $episode = $this->episodeMapper->getEpisode($episode["id"], "phpunit");
+
+        $this->assertEquals(0, $episode["current_second"]);
+        $this->assertEquals(100, $episode["duration"]);
     }
 
     /**
@@ -208,7 +287,8 @@ class EpisodesControllerTest extends TestCase
             $this->container->query("AppName"),
             $request,
             "phpunit",
-            $this->episodeMapper
+            $this->episodeMapper,
+            $this->feedMapper
         );
 
         $response = $controller->markPlayed();

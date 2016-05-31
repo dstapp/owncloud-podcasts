@@ -134,7 +134,7 @@ class WebViewController extends Controller
         $episodeId = (int)$episodeId;
 
         $episode = $this->episodeMapper->getEpisode($episodeId, $this->userId);
-        $feed = $this->feedMapper->getFeed($episode->getFeedId(), $this->userId);
+        $feed = $this->feedMapper->getFeed($episode["feed_id"], $this->userId);
 
         $params = [
             "id"      => $episodeId,

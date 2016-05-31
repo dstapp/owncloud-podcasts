@@ -57,6 +57,7 @@ class PlayerController
     @scope.loading = no
 
   onUpdateTime: ($currentTime, $duration) ->
+    console.log "update"
     if (($currentTime - @lastUpdateTime) > 30 || @lastUpdateTime > $currentTime) && @updateLocked == no
       @updateLocked = yes
       @episodeService.updatePosition(@id, $currentTime, $duration).then (response) =>
