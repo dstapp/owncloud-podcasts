@@ -18,21 +18,18 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
-angular.module("Podcasts").factory "FeedService", ["$http", ($http) ->
-  new class FeedService
-    all: ->
-      apiUrl = OC.generateUrl("/apps/podcasts/feeds")
-      $http.get apiUrl
+angular.module("Podcasts").factory "BroadcastService", ["$rootScope", ($rootScope) ->
+  @broadcastService = {}
 
-    subscribe: (feedUrl) ->
-      apiUrl = OC.generateUrl("/apps/podcasts/feeds")
-      $http.put apiUrl, url: feedUrl
+  @broadcastService.announceEpisodeDataChanged = () ->
+    $rootScope.$broadcast("episodeDataChanged");
 
-    unsubscribe: (feedId) ->
-      apiUrl = OC.generateUrl("/apps/podcasts/feeds/" + feedId)
-      $http.delete apiUrl
+  @broadcastService.announceFeedDataChanged = () ->
+    $rootScope.$broadcast("feedDataChanged");
 
-    markAllPlayed: () ->
-      apiUrl = OC.generateUrl("/apps/podcasts/episodes/markplayed")
-      $http.post apiUrl
+  @broadcastService.announceFeedFilterChanged = (filteredFeedId) ->
+    @filteredFeedId = filteredFeedId
+    $rootScope.$broadcast("feedFilterChanged");
+
+  return @broadcastService
 ]

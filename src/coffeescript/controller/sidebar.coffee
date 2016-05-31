@@ -20,10 +20,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 class SidebarController
 
-  @$inject: [ "$scope", "FeedService" ]
-  constructor: ($scope, FeedService) ->
+  @$inject: [ "$scope", "FeedService", "BroadcastService" ]
+  constructor: ($scope, FeedService, BroadcastService) ->
     @scope = $scope
     @feedService = FeedService
+    @broadcastService = BroadcastService
 
     @scope.filteredFeed = null
     @scope.feedUrl = ""
@@ -31,11 +32,16 @@ class SidebarController
 
     @loadFeeds()
 
+  onFeedDataChanged: ->
+    @loadFeeds()
+
   filter: (feed) ->
     if @isSelected(feed)
       @scope.filteredFeed = null
+      @broadcastService.announceFeedFilterChanged(null)
     else
       @scope.filteredFeed = feed
+      @broadcastService.announceFeedFilterChanged(feed.id)
 
   isSelected: (selection) ->
     @scope.filteredFeed == selection
@@ -46,6 +52,7 @@ class SidebarController
       @scope.loading = no
       @scope.feedUrl = ""
       @loadFeeds()
+      @broadcastService.announceEpisodeDataChanged()
     , (error) ->
       alert "Could not subcribe to the feed"
 
@@ -55,6 +62,7 @@ class SidebarController
       @feedService.unsubscribe(id).then (response) =>
         @scope.loading = no
         @loadFeeds()
+        @broadcastService.announceEpisodeDataChanged()
       , (error) ->
         alert "Could not unsubcribe the feed"
 
@@ -70,6 +78,7 @@ class SidebarController
     @scope.loading = yes
     @feedService.markAllPlayed().then (response) =>
       @scope.loading = no
+      @broadcastService.announceEpisodeDataChanged()
     , (error) ->
       alert "Could not mark all episodes as played"
 

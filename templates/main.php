@@ -72,7 +72,7 @@ script("podcasts", "podcasts");
         <div class="podcasts--list">
             <img src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>" ng-show="loading" />
 
-            <div class="list--item" ng-repeat="episode in episodes">
+            <div class="list--item" ng-repeat="episode in episodes" ng-show="filteredFeedId == null || episode.feed_id == filteredFeedId">
                 <div class="item--cover-container">
                     <img src="{{episode.cover}}" class="cover-container--cover" ng-click="list.select(episode)" ng-class="{'is--active' : list.isSelected(episode)}" ng-dblclick="list.openPlayer(episode)" />
                     <i class="cover-container--icon cover-container--icon-new icon-info-white" ng-show="episode.duration == 0 && episode.played == 0"></i>

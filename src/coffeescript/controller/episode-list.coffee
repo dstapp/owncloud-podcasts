@@ -20,14 +20,27 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 class EpisodeListController
 
-  @$inject: [ "$scope", "EpisodeService" ]
-  constructor: ($scope, EpisodeService) ->
+  @$inject: [ "$scope", "EpisodeService", "BroadcastService" ]
+  constructor: ($scope, EpisodeService, BroadcastService) ->
     @scope = $scope
     @episodeService = EpisodeService
+    @broadcastService = BroadcastService
+
     @scope.loading = no
     @scope.selectedEpisode = null
+    @scope.filteredFeedId = null
+
+    @scope.$on "episodeDataChanged", @onEpisodeDataChanged
+    @scope.$on "feedFilterChanged", @onFeedFilterChanged
 
     @loadEpisodes()
+
+  onEpisodeDataChanged: () =>
+    @loadEpisodes()
+
+  onFeedFilterChanged: () =>
+    @scope.filteredFeedId = @broadcastService.filteredFeedId
+    #@loadEpisodes()
 
   select: (episode) ->
     if @isSelected(episode)
@@ -47,7 +60,7 @@ class EpisodeListController
       alert "Could not load the episodes"
 
   openPlayer: (episode) ->
-    playerUrl = OC.generateUrl("/apps/podcasts/player/" + episode.id)
+    playerUrl = OC.generateUrl "/apps/podcasts/player/" + episode.id
     window.open playerUrl, "_blank", "toolbar=no, status=no, menubar=no, resizable=no, height=370,width=500"
     return true
 
