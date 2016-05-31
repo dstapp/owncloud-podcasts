@@ -1,0 +1,27 @@
+---
+engines:
+  markdownlint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - php
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+  coffeelint:
+    enabled: true
+ scss-lint:
+    enabled: true
+  markdownlint:
+    enabled: true
+ratings:
+  paths:
+  - "**.php"
+  - "**.coffee"
+  - "**.scss"
+exclude_paths:
+- db/
+- tests/
