@@ -3,6 +3,9 @@
 Build status: ![Travis CI build status](https://travis-ci.org/dprandzioch/owncloud-podcasts.svg?branch=master)
 Travis build URL: [https://travis-ci.org/dprandzioch/owncloud-podcasts](https://travis-ci.org/dprandzioch/owncloud-podcasts)
 
+Code Climate: [![Code Climate](https://codeclimate.com/github/dprandzioch/owncloud-podcasts/badges/gpa.svg)](https://codeclimate.com/github/dprandzioch/owncloud-podcasts)
+
+
 The ownCloud Podcasts app consolidates podcast episodes of all your feeds and
 shows them within the ownCloud web interface. Double-clicking a cover starts
 playback in a separate window so you can continue working in ownCloud while
