@@ -91,9 +91,9 @@ class EpisodeMapper extends Mapper
     {
         $params = [$uid];
 
-        $sql = "SELECT *PREFIX*podcasts_episodes.*, *PREFIX*podcasts_feeds.cover 
-                FROM *PREFIX*podcasts_episodes 
-                INNER JOIN *PREFIX*podcasts_feeds ON *PREFIX*podcasts_episodes.feed_id = *PREFIX*podcasts_feeds.id 
+        $sql = "SELECT *PREFIX*podcasts_episodes.*, *PREFIX*podcasts_feeds.cover
+                FROM *PREFIX*podcasts_episodes
+                INNER JOIN *PREFIX*podcasts_feeds ON *PREFIX*podcasts_episodes.feed_id = *PREFIX*podcasts_feeds.id
                 WHERE *PREFIX*podcasts_episodes.uid = ?";
 
         if (false === is_null($feedId)) {
@@ -187,8 +187,8 @@ class EpisodeMapper extends Mapper
         $sql = "SELECT * FROM *PREFIX*podcasts_episodes WHERE id = ? AND uid = ?";
         $stmt = $this->execute($sql, [$episodeId, $uid]);
 
-        if (0 === $stmt->rowCount()) {
-            throw new DoesNotExistException("Episode id={$episodeId} 
+        if (0 === count($stmt->fetchAll())) {
+            throw new DoesNotExistException("Episode id={$episodeId}
             uid={$uid} not found");
         }
 
