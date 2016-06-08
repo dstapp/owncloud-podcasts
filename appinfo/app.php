@@ -24,7 +24,7 @@ namespace OCA\Podcasts\AppInfo;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-\OCP\Backgroundjob::addRegularTask('\OCA\Podcasts\Cron\Check', "run");
+\OCP\BackgroundJob::addRegularTask('\OCA\Podcasts\Cron\Check', "run");
 
 $navigationEntry = function () {
     return [
