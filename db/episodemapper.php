@@ -22,6 +22,7 @@
 
 namespace OCA\Podcasts\Db;
 
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
 
@@ -175,6 +176,8 @@ class EpisodeMapper extends Mapper
      * @param int    $episodeId
      * @param string $uid
      *
+     * @throws DoesNotExistException
+     *
      * @return array
      */
     public function getEpisode($episodeId, $uid)
@@ -183,6 +186,11 @@ class EpisodeMapper extends Mapper
 
         $sql = "SELECT * FROM *PREFIX*podcasts_episodes WHERE id = ? AND uid = ?";
         $stmt = $this->execute($sql, [$episodeId, $uid]);
+
+        if (0 === $stmt->rowCount()) {
+            throw new DoesNotExistException("Episode id={$episodeId} 
+            uid={$uid} not found");
+        }
 
         return $stmt->fetch();
     }

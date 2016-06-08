@@ -30,7 +30,7 @@ vendor_script("podcasts", "videogular-poster/vg-poster");
 script("podcasts", "podcasts");
 
 ?>
-<div ng-app="Podcasts">
+<div ng-app="Podcasts" class="app--container">
     <div id="app-navigation" class="app--navigation" ng-controller="SidebarController as sidebar">
         <ul id="navigation-list" class="with-icon">
             <li class="navigation--add-new">
@@ -39,9 +39,11 @@ script("podcasts", "podcasts");
                         <input type="text" class="add-feed--input" ng-model="feedUrl"
                                placeholder="<?php p($l->t("Enter Feed URL")); ?>"/>
                         <button class="add-feed--button" ng-click="sidebar.subscribeFeed()"
-                                title="<?php p($l->t('Add Feed')); ?>"><?php p($l->t("Subscribe")); ?></button>
-                        <img class="navigation--loading-indicator" ng-show="loading"
-                             src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
+                                title="<?php p($l->t('Add Feed')); ?>">
+                                <span ng-show="loading == false"><?php p($l->t("Add")); ?></span>
+                                <img class="navigation--loading-indicator" ng-show="loading"
+                                     src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
+                        </button>
                     </form>
                 </div>
             </li>
@@ -74,7 +76,8 @@ script("podcasts", "podcasts");
 
             <div class="list--item" ng-repeat="episode in episodes" ng-show="filteredFeedId == null || episode.feed_id == filteredFeedId">
                 <div class="item--cover-container">
-                    <img src="{{episode.cover}}" class="cover-container--cover" ng-click="list.select(episode)" ng-class="{'is--active' : list.isSelected(episode)}" ng-dblclick="list.openPlayer(episode)" />
+                    <img src="{{episode.cover}}" ng-show="episode.cover != null" class="cover-container--cover" ng-click="list.select(episode)" ng-class="{'is--active' : list.isSelected(episode)}" ng-dblclick="list.openPlayer(episode)" />
+                    <img src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "nocover.jpg")); ?>" srcset="<?php print_unescaped(\OCP\Template::image_path("podcasts", "nocover.jpg")); ?> 1x, <?php print_unescaped(\OCP\Template::image_path("podcasts", "nocover@2x.jpg")); ?> 2x" ng-show="episode.cover == null" class="cover-container--cover" ng-click="list.select(episode)" ng-class="{'is--active' : list.isSelected(episode)}" ng-dblclick="list.openPlayer(episode)" />
                     <i class="cover-container--icon cover-container--icon-new icon-info-white" ng-show="episode.duration == 0 && episode.played == 0"></i>
                     <i class="cover-container--icon cover-container--icon-playing icon-play" ng-show="episode.duration > 0 && episode.played == 0"></i>
                 </div>

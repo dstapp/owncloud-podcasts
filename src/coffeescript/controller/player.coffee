@@ -38,8 +38,7 @@ class PlayerController
 
     @episodeService.get(@id).then (response) =>
       episode = response.data.data
-      console.log episode.cover
-      @lastUpdateTime = episode.currentSecond
+      @lastUpdateTime = episode.current_second
       @scope.startTime = @lastUpdateTime
 
       @config =
@@ -57,11 +56,9 @@ class PlayerController
     @scope.loading = no
 
   onUpdateTime: ($currentTime, $duration) ->
-    console.log "update"
     if (($currentTime - @lastUpdateTime) > 30 || @lastUpdateTime > $currentTime) && @updateLocked == no
       @updateLocked = yes
       @episodeService.updatePosition(@id, $currentTime, $duration).then (response) =>
-        console.log "time updated"
         @lastUpdateTime = $currentTime
         @updateLocked = no
       , (error) ->
