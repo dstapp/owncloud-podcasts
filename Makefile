@@ -46,6 +46,10 @@ appstore: clean install-deps build-assets
 	--exclude=$(project_dir)/Makefile \
 	--exclude=$(project_dir)/tests \
 	--exclude=$(project_dir)/src \
+	--exclude=$(project_dir)/node_modules \
+	--exclude=$(project_dir)/.bowerrc \
+	--exclude=$(project_dir)/.codeclimate.yml \
+	--exclude=$(project_dir)/.sass-cache \
 	--exclude=.keep \
 	--exclude=.gitkeep \
 	--exclude=.gitignore \
