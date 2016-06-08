@@ -187,11 +187,13 @@ class EpisodeMapper extends Mapper
         $sql = "SELECT * FROM *PREFIX*podcasts_episodes WHERE id = ? AND uid = ?";
         $stmt = $this->execute($sql, [$episodeId, $uid]);
 
-        if (0 === count($stmt->fetchAll())) {
+        $episode = $stmt->fetch();
+
+        if (false === array_key_exists("id", $episode)) {
             throw new DoesNotExistException("Episode id={$episodeId}
             uid={$uid} not found");
         }
 
-        return $stmt->fetch();
+        return $episode;
     }
 }
