@@ -189,7 +189,7 @@ class EpisodeMapper extends Mapper
 
         $episode = $stmt->fetch();
 
-        if (false === array_key_exists("id", $episode)) {
+        if (false === $episode) {
             throw new DoesNotExistException("Episode id={$episodeId}
             uid={$uid} not found");
         }
