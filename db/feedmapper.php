@@ -36,11 +36,11 @@ class FeedMapper extends Mapper
     /**
      * Constructor
      *
-     * @param IDBConnection $db
+     * @param IDBConnection $dbConnection
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConnection)
     {
-        parent::__construct($db, "podcasts_feeds");
+        parent::__construct($dbConnection, "podcasts_feeds");
     }
 
     /**
@@ -72,18 +72,18 @@ class FeedMapper extends Mapper
     /**
      * Gets a specific feed for a user
      *
-     * @param int    $id
+     * @param int    $feedId
      * @param string $uid
      *
      * @return \OCP\AppFramework\Db\Entity
      */
-    public function getFeed($id, $uid)
+    public function getFeed($feedId, $uid)
     {
-        $id = (int)$id;
+        $feedId = (int)$feedId;
 
         $sql = "SELECT * FROM *PREFIX*podcasts_feeds WHERE id = ? AND uid = ?";
 
-        return $this->findEntity($sql, [$id, $uid]);
+        return $this->findEntity($sql, [$feedId, $uid]);
     }
 
     /**

@@ -84,18 +84,35 @@ class WebViewController extends Controller
      */
     public function index()
     {
-        $response = new TemplateResponse("podcasts", "main", [
-            "episode_endpoint"            => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/episodes"),
-            "feed_endpoint"               => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/feeds"),
-            "player_url"                  => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/player/"),
-            "add_url"                     => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/feeds"),
-            "feed_delete_endpoint"        => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/feeds/"),
-            "mark_all_as_played_endpoint" => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/episodes/markplayed"),
-        ]);
+        $response = new TemplateResponse("podcasts", "main", []);
 
         $policy = new ContentSecurityPolicy();
         $policy->addAllowedFrameDomain("'self'");
         $policy->addAllowedImageDomain("*");
+
+        $response->setContentSecurityPolicy($policy);
+
+        return $response;
+    }
+
+    /**
+     * Podcast player template (AngularJS)
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @return TemplateResponse
+     */
+    public function playerTemplate()
+    {
+        $response = new TemplateResponse("podcasts", "podcast-player", [], "blank");
+
+        $policy = new ContentSecurityPolicy();
+        $policy->addAllowedFrameDomain("'self'");
+        $policy->addAllowedImageDomain("*");
+        $policy->addAllowedMediaDomain("*");
+        $policy->addAllowedConnectDomain("*");
+        $policy->addAllowedObjectDomain("*");
 
         $response->setContentSecurityPolicy($policy);
 
@@ -108,21 +125,21 @@ class WebViewController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @param int $id
+     * @param int $episodeId
      *
      * @return TemplateResponse
      */
-    public function player($id)
+    public function player($episodeId)
     {
-        $id = (int)$id;
+        $episodeId = (int)$episodeId;
 
-        $episode = $this->episodeMapper->getEpisode($id, $this->userId);
-        $feed = $this->feedMapper->getFeed($episode->getFeedId(), $this->userId);
+        $episode = $this->episodeMapper->getEpisode($episodeId, $this->userId);
+        $feed = $this->feedMapper->getFeed($episode["feed_id"], $this->userId);
 
         $params = [
-            "episode"         => $episode,
-            "feed"            => $feed,
-            "update_endpoint" => $this->urlGenerator->getAbsoluteURL("index.php/apps/podcasts/episodes/" . $id . "/position"),
+            "id"      => $episodeId,
+            "episode" => $episode,
+            "feed"    => $feed,
         ];
 
         $response = new TemplateResponse("podcasts", "player", $params);

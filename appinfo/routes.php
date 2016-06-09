@@ -32,8 +32,13 @@ $application->registerRoutes($this, [
             "verb" => "GET",
         ],
         [
+            "name" => "web_view#player_template",
+            "url"  => "/playerTemplate",
+            "verb" => "GET",
+        ],
+        [
             "name" => "web_view#player",
-            "url"  => "/player/{id}",
+            "url"  => "/player/{episodeId}",
             "verb" => "GET",
         ],
         [
@@ -42,8 +47,13 @@ $application->registerRoutes($this, [
             "verb" => "GET",
         ],
         [
+            "name" => "episodes#get_episode",
+            "url"  => "/episodes/{episodeId}",
+            "verb" => "GET",
+        ],
+        [
             "name" => "episodes#update_position",
-            "url"  => "/episodes/{id}/position",
+            "url"  => "/episodes/{episodeId}/position",
             "verb" => "POST",
         ],
         [
@@ -63,7 +73,7 @@ $application->registerRoutes($this, [
         ],
         [
             "name" => "feeds#delete_feed",
-            "url"  => "/feeds/{id}",
+            "url"  => "/feeds/{feedId}",
             "verb" => "DELETE",
         ],
     ],

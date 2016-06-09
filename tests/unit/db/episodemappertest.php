@@ -163,10 +163,10 @@ class EpisodeMapperTest extends TestCase
         $this->episodeMapper->updatePosition("phpunit", $episodes[0]["id"], 35, 100);
 
         $episode = $this->episodeMapper->getEpisode($episodes[0]["id"], "phpunit");
-        $this->assertTrue($episode instanceof Episode);
+        $this->assertTrue(is_array($episode));
 
-        $this->assertEquals(35, $episode->getCurrentSecond());
-        $this->assertEquals(100, $episode->getDuration());
+        $this->assertEquals(35, $episode["current_second"]);
+        $this->assertEquals(100, $episode["duration"]);
     }
 
     /**

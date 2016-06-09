@@ -1,18 +1,19 @@
 # ownCloud Podcasts app
 
 Build status: ![Travis CI build status](https://travis-ci.org/dprandzioch/owncloud-podcasts.svg?branch=master)
-Travis build URL: https://travis-ci.org/dprandzioch/owncloud-podcasts
+Travis build URL: [https://travis-ci.org/dprandzioch/owncloud-podcasts](https://travis-ci.org/dprandzioch/owncloud-podcasts)
 
-The ownCloud Podcasts app consolidates podcast episodes of all your feeds and shows them within the ownCloud web
-interface. Double-clicking a cover starts playback in a separate window so you can continue working in ownCloud while
-listening to your favorite episode. It also keeps track of your playback position you so can continue anytime right
-where you left off.
+Code Climate: [![Code Climate](https://codeclimate.com/github/dprandzioch/owncloud-podcasts/badges/gpa.svg)](https://codeclimate.com/github/dprandzioch/owncloud-podcasts)
 
-Place this app in **owncloud/apps/** and run `composer install`
+
+The ownCloud Podcasts app consolidates podcast episodes of all your feeds and
+shows them within the ownCloud web interface. Double-clicking a cover starts
+playback in a separate window so you can continue working in ownCloud while
+listening to your favorite episode. It also keeps track of your playback
+position you so can continue anytime right where you left off.
 
 ## Todo
 
-* Volume control
 * Full translation
 * Beautify UI
 * Fix CLRF
@@ -37,15 +38,22 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ```
 
-## Publish to App Store
+## Installing
 
-First get an account for the [App Store](http://apps.owncloud.com/) then run:
+owncloud-podcasts is available from the ownCloud app store, just enable
+experimental apps. You can find it in the multimedia category.
 
-    make appstore_package
+### Installing from GitHub
 
-The archive is located in build/artifacts/appstore and can then be uploaded to the App Store.
+Clone the current `master` branch and run `make`. Copy the resulting
+podcasts.tar.gz into your apps/ directory and extract it. You will need to
+have PHP >= 5.4, curl and scss, coffeescript, npm, node and bower installed.
+Creating the tarball is known to fail on OS X & BSD due to the different tar
+syntax - so be sure you are on a linux machine or edit the Makefile to match
+your needs.
 
 ## Running tests
+
 After [Installing PHPUnit](http://phpunit.de/getting-started.html) run:
 
     phpunit -c phpunit.xml

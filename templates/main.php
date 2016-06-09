@@ -20,75 +20,71 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-script("podcasts", "vendor/js_tpl");
-script("podcasts", "jquery.podcast-sidebar");
-script("podcasts", "jquery.episode-list");
-script("podcasts", "episodelist");
+style("podcasts", "default");
+vendor_script("podcasts", "angular/angular.min");
+vendor_script("podcasts", "angular-sanitize/angular-sanitize.min");
+vendor_script("podcasts", "videogular/videogular");
+vendor_script("podcasts", "videogular-controls/vg-controls");
+vendor_script("podcasts", "videogular-buffering/vg-buffering");
+vendor_script("podcasts", "videogular-poster/vg-poster");
+script("podcasts", "podcasts");
 
-style("podcasts", "episodelist");
 ?>
-<div id="app-navigation">
-    <ul id="navigation-list" class="with-icon">
-        <li class="navigation--add-new">
-            <div class="add-new--container">
-                <form class="add-feed" data-url="<?php echo $_["add_url"] ?>">
-                    <input type="text" class="add-feed--input" value="" placeholder="<?php p($l->t("Enter Feed URL")); ?>"/>
-                    <button class="add-feed--button" title="<?php p($l->t('Add Feed')); ?>"><?php p($l->t("Add Feed")); ?></button>
-                    <img class="list--loading-indicator"
-                         src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
-                </form>
+<div ng-app="Podcasts" class="app--container">
+    <div id="app-navigation" class="app--navigation" ng-controller="SidebarController as sidebar">
+        <ul id="navigation-list" class="with-icon">
+            <li class="navigation--add-new">
+                <div class="add-new--container">
+                    <form class="add-feed" data-url="<?php echo $_["add_url"] ?>">
+                        <input type="text" class="add-feed--input" ng-model="feedUrl"
+                               placeholder="<?php p($l->t("Enter Feed URL")); ?>"/>
+                        <button class="add-feed--button" ng-click="sidebar.subscribeFeed()"
+                                title="<?php p($l->t('Add Feed')); ?>">
+                                <span ng-show="loading == false"><?php p($l->t("Add")); ?></span>
+                                <img class="navigation--loading-indicator" ng-show="loading"
+                                     src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
+                        </button>
+                    </form>
+                </div>
+            </li>
+
+            <li class="navigation--feed" ng-repeat="feed in feeds">
+                <a href="#" class="feed--item" ng-click="sidebar.filter(feed)" ng-class="{'is--active' : sidebar.isSelected(feed)}">{{feed.name}}</a>
+                <div class="app-navigation-entry-utils">
+                    <button class="feed--delete-button icon-delete" title="<?php p($l->t("Delete")); ?>"
+                            ng-click="sidebar.unsubscribeFeed(feed.id)"></button>
+                </div>
+            </li>
+        </ul>
+
+        <div id="app-settings">
+            <div id="app-settings-header">
+                <button class="settings-button generalsettings" data-apps-slide-toggle="#app-settings-content"
+                        tabindex="0"></button>
             </div>
-        </li>
-
-        <li class="list--feed-container" data-endpoint="<?php echo $_["feed_endpoint"]; ?>"
-            data-delete-endpoint="<?php echo $_["feed_delete_endpoint"]; ?>">
-        </li>
-    </ul>
-
-    <div id="app-settings">
-        <div id="app-settings-header">
-            <button class="settings-button generalsettings" data-apps-slide-toggle="#app-settings-content"
-                    tabindex="0"></button>
+            <div id="app-settings-content">
+                <button class="settings--mark-played" ng-click="sidebar.markAllPlayed()">
+                    <?php p($l->t("Mark all as played")); ?>
+                </button>
+            </div>
         </div>
-        <div id="app-settings-content">
-            <button class="settings--mark-played" data-endpoint="<?php echo $_["mark_all_as_played_endpoint"]; ?>">
-                <?php p($l->t("Mark all as played")); ?>
-            </button>
+
+    </div>
+    <div id="app-content" ng-controller="EpisodeListController as list">
+        <div class="podcasts--list">
+            <img src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>" ng-show="loading" />
+
+            <div class="list--item" ng-repeat="episode in episodes" ng-show="filteredFeedId == null || episode.feed_id == filteredFeedId">
+                <div class="item--cover-container">
+                    <img src="{{episode.cover}}" ng-show="episode.cover != null && episode.cover != ''" class="cover-container--cover" ng-click="list.select(episode)" ng-class="{'is--active' : list.isSelected(episode)}" ng-dblclick="list.openPlayer(episode)" />
+                    <img src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "nocover.jpg")); ?>" srcset="<?php print_unescaped(\OCP\Template::image_path("podcasts", "nocover.jpg")); ?> 1x, <?php print_unescaped(\OCP\Template::image_path("podcasts", "nocover@2x.jpg")); ?> 2x" ng-show="episode.cover == null || episode.cover == ''" class="cover-container--cover" ng-click="list.select(episode)" ng-class="{'is--active' : list.isSelected(episode)}" ng-dblclick="list.openPlayer(episode)" />
+                    <i class="cover-container--icon cover-container--icon-new icon-info-white" ng-show="episode.duration == 0 && episode.played == 0"></i>
+                    <i class="cover-container--icon cover-container--icon-playing icon-play" ng-show="episode.duration > 0 && episode.played == 0"></i>
+                </div>
+                <div class="item--description">
+                    {{episode.name}}
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
-<div id="app-content">
-    <div class="podcasts--list" data-endpoint="<?php echo $_["episode_endpoint"]; ?>"
-         data-player-url="<?php echo $_["player_url"]; ?>">
-        <img src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
-    </div>
-</div>
-
-<script type="text/html" id="item_tmpl">
-    <div class="list--item" data-url="<&= escapeHTML(playerUrl) &><&= escapeHTML(val.id) &>"
-         data-feed-id="<&= escapeHTML(val.feed_id) &>">
-        <div class="item--cover-container">
-            <img src="<&= val.cover &>" class="cover-container--cover"/>
-            <& if (val.duration == 0 && val.played == 0) { &>
-                <i class="cover-container--icon cover-container--icon-new icon-info-white"></i>
-            <& } &>
-
-            <& if (val.duration > 0 && val.played == 0) { &>
-                <i class="cover-container--icon cover-container--icon-playing icon-play"></i>
-            <& } &>
-        </div>
-        <div class="item--description">
-            <&= escapeHTML(val.name) &>
-        </div>
-    </div>
-</script>
-
-<script type="text/html" id="feed_tmpl">
-    <li class="feed-container--item">
-        <a href="#" class="feed--item" data-id="<&= val.id &>"><&= val.name &></a>
-        <div class="app-navigation-entry-utils">
-            <button class="feed--delete-button icon-delete" title="<?php p($l->t("Delete")); ?>" data-id="<&= val.id &>"></button>
-        </div>
-    </li>
-</script>

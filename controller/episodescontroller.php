@@ -27,6 +27,7 @@ use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCA\Podcasts\Db\EpisodeMapper;
+use \OCA\Podcasts\Db\FeedMapper;
 
 /**
  * Class EpisodesController
@@ -47,6 +48,11 @@ class EpisodesController extends ApiController
     protected $episodeMapper;
 
     /**
+     * @var FeedMapper
+     */
+    protected $feedMapper;
+
+    /**
      * @var IRequest
      */
     protected $request;
@@ -57,19 +63,22 @@ class EpisodesController extends ApiController
      * @param string        $appName
      * @param IRequest      $request
      * @param string        $userId
-     * @param EpisodeMapper $mapper
+     * @param EpisodeMapper $episodeMapper
+     * @param FeedMapper    $feedMapper
      */
     public function __construct(
         $appName,
         IRequest $request,
         $userId,
-        EpisodeMapper $mapper
+        EpisodeMapper $episodeMapper,
+        FeedMapper $feedMapper
     ) {
         parent::__construct($appName, $request);
 
         $this->userId = $userId;
         $this->request = $request;
-        $this->episodeMapper = $mapper;
+        $this->episodeMapper = $episodeMapper;
+        $this->feedMapper = $feedMapper;
     }
 
     /**
@@ -85,7 +94,62 @@ class EpisodesController extends ApiController
         $feedId = $this->request->getParam("feedId", null);
 
         return new JSONResponse([
-            "data"   => $this->episodeMapper->getEpisodes($this->userId, $feedId, 1000),
+            "data"    => $this->episodeMapper->getEpisodes($this->userId,
+                $feedId, 1000),
+            "success" => true,
+        ]);
+    }
+
+    /**
+     * AJAX / Returns a single episode
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @param int $episodeId
+     *
+     * @return JSONResponse
+     */
+    public function getEpisode($episodeId)
+    {
+        $episode = (array)$this->episodeMapper->getEpisode(
+            (int)$episodeId,
+            $this->userId
+        );
+
+        $feed = $this->feedMapper->getFeed(
+            (int)$episode["feed_id"],
+            $this->userId
+        );
+
+        $ext = pathinfo($episode["url"], PATHINFO_EXTENSION);
+
+        switch ($ext) {
+            case "m4a":
+            case "mp4":
+                $mimeType = "audio/mp4";
+                break;
+
+            case "ogg":
+                $mimeType = "audio/ogg; codecs=vorbis";
+                break;
+
+            case "opus":
+                $mimeType = "audio/ogg; codecs=opus";
+                break;
+
+            default:
+                $mimeType = "audio/mpeg";
+                break;
+        }
+
+        $episode = array_merge($episode, [
+            "mimeType" => $mimeType,
+            "cover"    => $feed->getCover(),
+        ]);
+
+        return new JSONResponse([
+            "data"    => $episode,
             "success" => true,
         ]);
     }
@@ -96,22 +160,43 @@ class EpisodesController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @param int $id
+     * @param int $episodeId
      *
      * @return JSONResponse
      */
-    public function updatePosition($id)
+    public function updatePosition($episodeId)
     {
-        $id = (int)$id;
+        $episodeId = (int)$episodeId;
 
         $second = (int)$this->request->getParam("second");
         $duration = (int)$this->request->getParam("duration");
 
-        $result = (bool) $this->episodeMapper->updatePosition($this->userId, $id, $second, $duration);
+        $playedUpdateResult = true;
 
-        return new JSONResponse([
-            "success" => (true === $result),
-        ]);
+        if (($second + 60) > $duration) {
+            // remainingPlaytime < 60 sec -> played -> reset position
+            $playedUpdateResult = (bool)$this->episodeMapper->updatePlayedStatus(
+                $this->userId,
+                $episodeId,
+                true
+            );
+
+            $second = 0;
+        }
+
+        $result = (bool)$this->episodeMapper->updatePosition(
+            $this->userId,
+            $episodeId,
+            $second,
+            $duration
+        );
+
+        return new JSONResponse(
+            [
+                "success" => (true === $result && true === $playedUpdateResult),
+            ],
+            (true === $result && true === $playedUpdateResult) ? Http::STATUS_OK : Http::STATUS_BAD_REQUEST
+        );
     }
 
     /**
@@ -124,10 +209,13 @@ class EpisodesController extends ApiController
      */
     public function markPlayed()
     {
-        $result = (bool) $this->episodeMapper->markAllAsPlayed($this->userId);
+        $result = (bool)$this->episodeMapper->markAllAsPlayed($this->userId);
 
-        return new JSONResponse([
-            "success" => (true === $result),
-        ]);
+        return new JSONResponse(
+            [
+                "success" => (true === $result),
+            ],
+            (true === $result) ? Http::STATUS_OK : Http::STATUS_BAD_REQUEST
+        );
     }
 }

@@ -95,7 +95,6 @@ class FeedsController extends ApiController
      * Returns all feeds for the current user
      *
      * @NoAdminRequired
-     * @NoCSRFRequired
      *
      * @return JSONResponse
      */
@@ -111,19 +110,18 @@ class FeedsController extends ApiController
      * Deletes a feed
      *
      * @NoAdminRequired
-     * @NoCSRFRequired
      *
-     * @param int $id
+     * @param int $feedId
      *
      * @return JSONResponse
      */
-    public function deleteFeed($id = null)
+    public function deleteFeed($feedId = null)
     {
         $feed = new Feed();
-        $feed->setId($id);
+        $feed->setId($feedId);
 
         $this->feedMapper->delete($feed);
-        $this->episodeMapper->deleteByFeedId($id, $this->userId);
+        $this->episodeMapper->deleteByFeedId($feedId, $this->userId);
 
         return new JSONResponse([
             "success" => true,
@@ -134,7 +132,6 @@ class FeedsController extends ApiController
      * Adds a feed
      *
      * @NoAdminRequired
-     * @NoCSRFRequired
      *
      * @return JSONResponse
      */
@@ -176,9 +173,12 @@ class FeedsController extends ApiController
             $message = $e->getMessage();
         }
 
-        return new JSONResponse([
-            "success" => $success,
-            "message" => $message,
-        ]);
+        return new JSONResponse(
+            [
+                "success" => $success,
+                "message" => $message,
+            ],
+            (false === empty($message)) ? Http::STATUS_BAD_REQUEST : Http::STATUS_OK
+        );
     }
 }

@@ -20,36 +20,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-style("podcasts", "player");
+style("podcasts", "default");
+vendor_script("podcasts", "angular/angular.min");
+vendor_script("podcasts", "angular-sanitize/angular-sanitize.min");
+vendor_script("podcasts", "videogular/videogular");
+vendor_script("podcasts", "videogular-controls/vg-controls");
+vendor_script("podcasts", "videogular-buffering/vg-buffering");
+vendor_script("podcasts", "videogular-poster/vg-poster");
+script("podcasts", "podcasts");
 
-script("podcasts", "jquery.podcast-player");
-script("podcasts", "player");
 ?>
-<div id="player" class="player" data-url="<?php echo $_["episode"]->getUrl() ?>"
-     data-name="<?php echo $_["episode"]->getName() ?>"
-     data-current-time="<?php echo $_["episode"]->getCurrentSecond() ?>"
-     data-update-endpoint="<?php echo $_["update_endpoint"] ?>"
-     data-id="<?php echo $_["episode"]->getId() ?>">
+<div ng-app="Podcasts" class="app--player">
+    <div class="player" ng-controller="PlayerController as controller" data-id="<?php echo $_["id"]; ?>">
+        <div class="player--cover" style="background: url('<?php echo $_["feed"]->getCover(); ?>') no-repeat center center fixed; background-size: 100% auto;"></div>
+        <videogular vg-theme="controller.config.theme.url"
+                    vg-start-time="startTime"
+                    vg-player-ready="controller.onPlayerReady($API)"
+                    vg-update-time="controller.onUpdateTime($currentTime, $duration)"
+                    class="videogular-container audio">
+            <vg-media vg-src="controller.config.sources" vg-type="audio"></vg-media>
 
-    <span class="player--loading">
-        <img src="<?php print_unescaped(\OCP\Template::image_path("podcasts", "loading.gif")); ?>"/>
-    </span>
+            <vg-controls>
+                <vg-play-pause-button></vg-play-pause-button>
+                <vg-time-display>{{ currentTime | date:'HH:mm:ss':'+0000' }}</vg-time-display>
+                <vg-scrub-bar>
+                    <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                </vg-scrub-bar>
+                <vg-time-display>{{ timeLeft | date:'HH:mm:ss':'+0000' }}</vg-time-display>
+                <vg-volume>
+                    <vg-mute-button></vg-mute-button>
+                </vg-volume>
+            </vg-controls>
 
-    <audio class="audio" name="" src="<?php echo $_["episode"]->getUrl() ?>"></audio>
-
-    <div class="player--cover">
-        <img src="<?php echo $_["feed"]->getCover() ?>" class="cover--image"/>
+            <vg-buffering></vg-buffering>
+            <div class="player--clear"></div>
+        </videogular>
     </div>
-    <div class="player--content">
-        <div class="player--title"><?php echo $_["episode"]->getName() ?></div>
-
-        <div class="player--seekbar">
-            <input type="range" step="any" class="seekbar"/>
-            <span class="player--remaining">00:00:00</span>
-        </div>
-        <div class="player--controls">
-            <i class="icon-pause-big player--play-btn"></i>
-        </div>
-    </div>
-    <div class="clearfix"></div>
 </div>

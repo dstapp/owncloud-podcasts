@@ -1,0 +1,112 @@
+//
+// Copyright (c) 2016 David Prandzioch
+// https://github.com/dprandzioch/owncloud-podcasts
+//
+// This file is part of owncloud-podcasts.
+//
+// owncloud-podcasts is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
+$item-cover-background-color: #ccc;
+
+.app--container {
+  height: 100%;
+}
+
+.podcasts--list {
+  padding: 20px;
+
+  .list--loading-indicator {
+    display: none;
+  }
+
+  .list--item {
+    float: left;
+    height: 250px;
+    text-align: center;
+    width: 250px;
+
+    .item--description {
+      height: 60px;
+    }
+
+    .item--cover-container {
+      @include mixin--box-shadow();
+
+      background-color: $item-cover-background-color;
+      height: 150px;
+      margin: 0 auto 16px;
+      position: relative;
+      width: 150px;
+
+      .cover-container--icon {
+        border-radius: 50%;
+        display: inline-block;
+        height: 12px;
+        padding: 4px;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        width: 12px;
+        z-index: 5000;
+      }
+
+      .cover-container--cover {
+        height: 100%;
+        width: auto;
+        max-width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      & .cover-container--icon-playing {
+        background-color: #fff;
+      }
+
+      & .cover-container--icon-new {
+        background-color: #ff6666;
+      }
+
+      & .is--active {
+        border: 5px solid #3a7ead;
+        height: 140px;
+        width: auto;
+      }
+
+    }
+  }
+}
+
+.app--navigation {
+  .navigation--add-new {
+    .add-new--container {
+      padding: 12px;
+    }
+  }
+
+  .navigation--feed {
+    .feed--item {
+      padding-left: 12px !important;
+
+      &.is--active {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .app-navigation-entry-utils {
+    padding-right: 12px;
+  }
+}
